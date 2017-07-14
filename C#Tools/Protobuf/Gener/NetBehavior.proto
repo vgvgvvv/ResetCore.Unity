@@ -1,0 +1,16 @@
+
+
+message Vector3D {
+	required float x = 1;
+	required float y = 2;
+	required float z = 3;
+}
+message Point2D {
+	required float x = 1;
+	required float y = 2;
+}
+message Transform{
+	required Vector3D position = 1;
+	required Vector3D eulerAngle = 2;
+	required Vector3D scale = 3;
+}

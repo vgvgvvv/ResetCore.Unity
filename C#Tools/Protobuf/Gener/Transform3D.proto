@@ -1,0 +1,7 @@
+import "Vector3D.proto";
+message Transform3DData {
+	optional int32 instanceId = 1;
+	optional Vector3DData localPosition = 2;
+	optional Vector3DData localEulerAngle = 3;
+	optional Vector3DData localScale = 4;
+}

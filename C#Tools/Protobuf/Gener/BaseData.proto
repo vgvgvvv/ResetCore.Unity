@@ -1,0 +1,60 @@
+
+message BoolData{
+	optional bool value= 1[default = true];
+}
+
+message DoubleData{
+	optional double value = 1[default = 0];
+}
+
+message FloatData{
+	optional float value = 1[default = 0];
+}
+
+message Int32Data {
+	optional int32 value = 1[default = 0];
+}
+
+message UInt32Data{
+	optional uint32 value = 1[default = 0];
+}
+
+message Int64Data{
+	optional int64 value = 1[default = 0];
+}
+
+message UInt64Data{
+	optional uint64 value = 1[default = 0];
+}
+
+message SInt32Data{
+	optional sint32 value = 1[default = 0];
+}
+
+message SInt64Data{
+	optional sint64 value = 1[default = 0];
+}
+
+message Fixed32Data{
+	optional fixed32 value = 1[default = 0];
+}
+
+message Fixed64Data{
+	optional fixed64 value = 1[default = 0];
+}
+
+message SFixed32Data{
+	optional sfixed32 value = 1[default = 0];
+}
+
+message SFixed64Data{
+	optional sfixed64 value = 1[default = 0];
+}
+
+message StringData{
+	optional string value = 1[default = ""];
+}
+
+message BytesData{
+	optional bytes value = 1[default = ""];
+}

@@ -1,0 +1,6 @@
+E:\Unity5Project\U5ABTest\C#Tools\ExcelDataManager\ExcelDataManager\bin\Release\ExcelDataManager.exe.config
+E:\Unity5Project\U5ABTest\C#Tools\ExcelDataManager\ExcelDataManager\obj\Release\ExcelDataManager.csproj.ResolveComReference.cache
+E:\Unity5Project\U5ABTest\C#Tools\ExcelDataManager\ExcelDataManager\bin\Release\ExcelDataManager.exe
+E:\Unity5Project\U5ABTest\C#Tools\ExcelDataManager\ExcelDataManager\bin\Release\ExcelDataManager.pdb
+E:\Unity5Project\U5ABTest\C#Tools\ExcelDataManager\ExcelDataManager\obj\Release\ExcelDataManager.exe
+E:\Unity5Project\U5ABTest\C#Tools\ExcelDataManager\ExcelDataManager\obj\Release\ExcelDataManager.pdb
