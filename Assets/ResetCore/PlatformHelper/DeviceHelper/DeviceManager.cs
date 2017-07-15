@@ -84,7 +84,7 @@ namespace ResetCore.PlatformHelper
 
             sdkListenerDict.Add(sdkName, listener);
 #else
-            Debug.logger.LogError("PlatformHelper", "创建失败：需要引入DLLMANAGER模块");
+            Debug.unityLogger.LogError("PlatformHelper", "创建失败：需要引入DLLMANAGER模块");
 #endif
         }
 
