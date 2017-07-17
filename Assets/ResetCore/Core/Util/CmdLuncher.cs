@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Diagnostics;
 
@@ -11,7 +12,7 @@ namespace ResetCore.Util
         /// </summary>
         /// <param name="runableName">可执行程序路径</param>
         /// <param name="command">命令</param>
-        public static void LaunchExe(string runableName, string command)
+        public static Process LaunchExe(string runableName, string command, Action callback = null)
         {
 
             Process myProcess = new Process();
@@ -24,6 +25,13 @@ namespace ResetCore.Util
 
             myProcess.Start();
 
+            if (callback != null)
+            {
+                myProcess.WaitForExit();
+                callback();
+            }
+
+            return myProcess;
         }
     }
 
