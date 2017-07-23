@@ -52,6 +52,11 @@ namespace ResetCore.Util
         private ReCoroutine waitingCoroutine { get; set; }
 
         /// <summary>
+        /// 加锁对象
+        /// </summary>
+        private static object lockObject = new object();
+
+        /// <summary>
         /// 是否正在等待
         /// </summary>
         /// <returns></returns>
@@ -149,7 +154,10 @@ namespace ResetCore.Util
         /// <returns></returns>
         public static float WaitWWW(WWW www)
         {
-            replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(() => www.isDone), CoroutineType.Update);
+            lock (lockObject)
+            {
+                replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(() => www.isDone), CoroutineType.Update);
+            }
             return float.NaN;
         }
 
@@ -160,7 +168,10 @@ namespace ResetCore.Util
         /// <returns></returns>
         public static float WaitAsynOperation(AsyncOperation operation)
         {
-            replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(() => operation.isDone), CoroutineType.Update);
+            lock (lockObject)
+            {
+                replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(() => operation.isDone), CoroutineType.Update);
+            }
             return float.NaN;
         }
 
@@ -173,8 +184,32 @@ namespace ResetCore.Util
         {
             Thread thread = new Thread(new ThreadStart(act));
             thread.Start();
-            
-            replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(() => !thread.IsAlive), CoroutineType.Update);
+            lock (lockObject)
+                replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(() => !thread.IsAlive), CoroutineType.Update);
+            return float.NaN;
+        }
+
+        /// <summary>
+        /// 等待其他协程
+        /// </summary>
+        /// <param name="coroutine"></param>
+        /// <returns></returns>
+        public static float Wait(ReCoroutine coroutine)
+        {
+            lock (lockObject)
+                replaceCoroutine = coroutine;
+            return float.NaN;
+        }
+
+        /// <summary>
+        /// 等待其他协程
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public static float Wait(IEnumerator<float> e)
+        {
+            lock (lockObject)
+                replaceCoroutine = ReCoroutineManager.AddCoroutine(e);
             return float.NaN;
         }
 
@@ -185,7 +220,8 @@ namespace ResetCore.Util
         /// <returns></returns>
         public static float WaitForAllCoroutines(params ReCoroutine[] coroutines)
         {
-            replaceCoroutine = ReCoroutineManager.AddCoroutine(
+            lock (lockObject)
+                replaceCoroutine = ReCoroutineManager.AddCoroutine(
                 GetReplaceCoroutine(() => {
 
                     for(int i = 0; i < coroutines.Length; i++)
@@ -206,7 +242,8 @@ namespace ResetCore.Util
         /// <returns></returns>
         public static float WaitUntil(Func<bool> condition)
         {
-            replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(condition), CoroutineType.Update);
+            lock (lockObject)
+                replaceCoroutine = ReCoroutineManager.AddCoroutine(GetReplaceCoroutine(condition), CoroutineType.Update);
             return float.NaN;
         }
 

@@ -5,13 +5,13 @@ using System;
 using System.Threading;
 using System.Linq;
 
-public class TheardHelper : MonoBehaviour
+public class ThreadHelper : MonoBehaviour
 {
     public static int maxThreads = 8;
     static int numThreads;
 
-    private static TheardHelper _current;
-    public static TheardHelper Current
+    private static ThreadHelper _current;
+    public static ThreadHelper Current
     {
         get
         {
@@ -37,7 +37,7 @@ public class TheardHelper : MonoBehaviour
                 return;
             initialized = true;
             var g = new GameObject("TheardHelper");
-            _current = g.AddComponent<TheardHelper>();
+            _current = g.AddComponent<ThreadHelper>();
         }
 
     }
@@ -143,6 +143,7 @@ public class TheardHelper : MonoBehaviour
             foreach (var item in _currentDelayed)
                 _delayed.Remove(item);
         }
+
         //遍历并且执行
         foreach (var delayed in _currentDelayed)
         {

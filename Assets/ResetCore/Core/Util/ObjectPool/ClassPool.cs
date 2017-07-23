@@ -71,7 +71,8 @@ namespace ResetCore.Util
             if (objectStack.Count < maxStackCount)
             {
                 t.isDirty = true;
-                if(!objectStack.Contains(t))
+                t.BeforeStoreToPool();
+                if (!objectStack.Contains(t))
                     objectStack.Push(t);
             }
         }
