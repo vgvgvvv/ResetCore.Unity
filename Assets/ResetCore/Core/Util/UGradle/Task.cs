@@ -53,7 +53,17 @@ namespace ResetCore.UGradle
         /// <summary>
         /// 所处的工程
         /// </summary>
-        public Project project { get; set; }
+        public WorkFlow workFlow { get; set; }
+
+        /// <summary>
+        /// 是否已经完成
+        /// </summary>
+        public bool isDone { get; private set; }
+
+        /// <summary>
+        /// 是否正在运行
+        /// </summary>
+        public bool isRunning { get; private set; }
 
         /// <summary>
         /// 依赖的任务
@@ -68,36 +78,54 @@ namespace ResetCore.UGradle
 
             input = new Dictionary<string, object>();
             output = new Dictionary<string, object>();
+            isDone = false;
 
-            if(actionType == TaskActionType.Sync)
+            if (actionType == TaskActionType.Sync)
                 syncActionList = new List<Action>();
             else
                 asynActionList = new List<IEnumerator<float>>();
 
-            project = null;
+            workFlow = null;
         }
 
         /// <summary>
         /// 依赖任务
         /// </summary>
         /// <param name="task"></param>
-        public void DependsOn(Task task)
+        public Task DependsOn(Task task)
         {
             taskDict.Add(task.name, task);
+            return this;
         }
 
         /// <summary>
         /// 首先做
         /// </summary>
         /// <param name="closure"></param>
-        public void DoSync(Action closure)
+        public Task AddSync(Action closure)
         {
+            if (actionType == TaskActionType.Asyn)
+            {
+                Debug.unityLogger.LogError("添加同步行为", "异步任务中不允许加入同步行为");
+                return this;
+            }
             syncActionList.Add(closure);
+            return this;
         }
 
-        public void DoAync(IEnumerator<float> e)
+        /// <summary>
+        /// 添加异步行为
+        /// </summary>
+        /// <param name="e"></param>
+        public Task AddAync(IEnumerator<float> e)
         {
+            if (actionType == TaskActionType.Sync)
+            {
+                Debug.unityLogger.LogError("添加异步行为", "同步任务中不允许加入异步行为");
+                return this;
+            }
             asynActionList.Add(e);
+            return this;
         }
 
 
@@ -128,9 +156,10 @@ namespace ResetCore.UGradle
         /// </summary>
         /// <param name="name"></param>
         /// <param name="outObj"></param>
-        public void AddOutput(string name, object outObj)
+        public Task AddOutput(string name, object outObj)
         {
             output.Add(name, outObj);
+            return this;
         }
 
         /// <summary>
@@ -139,11 +168,34 @@ namespace ResetCore.UGradle
         /// <returns></returns>
         public ReCoroutine GetCoroutine()
         {
+            if (isRunning)
+            {
+                return ReCoroutineManager.AddCoroutine(WaitForFinish());
+            }
             return ReCoroutineManager.AddCoroutine(Run());
         }
+        
+        /// <summary>
+        /// 等待该任务执行完成
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator<float> WaitForFinish()
+        {
+            while (isRunning)
+            {
+                yield return 0;
+            }
+        }
 
+        /// <summary>
+        /// 执行
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator<float> Run()
         {
+            if(isDone)
+                yield break;
+
             var tasks = new ReCoroutine[taskDict.Count];
             for (int i = 0; i < taskDict.Count; i++)
             {
@@ -167,6 +219,8 @@ namespace ResetCore.UGradle
                     yield return ReCoroutine.Wait(asynActionList[i]);
                 }
             }
+
+            isDone = true;
         }
     }
 }

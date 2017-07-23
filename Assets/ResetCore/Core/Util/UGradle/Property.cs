@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ResetCore.UGradle
 {
-    public class Property
+    public abstract class Property
     {
         /// <summary>
         /// 名称
@@ -15,6 +15,11 @@ namespace ResetCore.UGradle
         /// 描述
         /// </summary>
         public string description { get; set; }
+
+        /// <summary>
+        /// 应用属性 
+        /// </summary>
+        public abstract void Apply(WorkFlow workFlow);
 
     }
 }

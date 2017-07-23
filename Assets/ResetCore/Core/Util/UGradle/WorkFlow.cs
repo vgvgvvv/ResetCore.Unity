@@ -5,12 +5,17 @@ using UnityEngine;
 
 namespace ResetCore.UGradle
 {
-    public class Project
+    public class WorkFlow
     {
         /// <summary>
         /// 依赖的属性
         /// </summary>
         private DictionaryList<string, Property> propertys = new DictionaryList<string, Property>();
+        
+        /// <summary>
+        /// 上下文
+        /// </summary>
+        private Dictionary<string, object> context = new Dictionary<string, object>();
 
         /// <summary>
         /// 名称
@@ -27,7 +32,7 @@ namespace ResetCore.UGradle
         /// </summary>
         public DictionaryList<string, Task> taskDict = new DictionaryList<string, Task>();
 
-        public Project(string name, string description)
+        public WorkFlow(string name, string description)
         {
             this.name = name;
             this.description = description;
@@ -37,28 +42,38 @@ namespace ResetCore.UGradle
         /// 添加任务
         /// </summary>
         /// <param name="task"></param>
-        public void AddTask(Task task)
+        public WorkFlow AddTask(Task task)
         {
-            if(task.project != null && task.project != this)
+            if(task.workFlow != null && task.workFlow != this)
             {
                 Debug.unityLogger.LogError("添加任务错误", "该任务已经在别的工程当中了");
-                return;
+                return this;
             }
-            task.project = this;
+            task.workFlow = this;
             taskDict.Add(task.name, task);
+            return this;
         }
 
         /// <summary>
         /// 应用属性
         /// </summary>
         /// <param name="prop"></param>
-        public void Apply(Property prop)
+        public WorkFlow Apply(Property prop)
         {
             propertys.Add(prop.name, prop);
+            return this;
         }
 
+        /// <summary>
+        /// 开始执行流程
+        /// </summary>
         public void Start()
         {
+            //应用属性
+            for (int i = 0; i < propertys.Count; i++)
+            {
+                propertys.GetValueAt(i).Apply(this);
+            }
             ReCoroutineManager.AddCoroutine(Run());
         }
 
