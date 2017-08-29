@@ -55,8 +55,8 @@ namespace ResetCore.Util
 
             foreach (var key in fieldDataNameDict.Keys)
             {
-                var val = UserDataManager.GetDataOrDef(fieldDataNameDict[key][1], fieldDataNameDict[key][0], 
-                    fieldDataNameDict[key], key.FieldType);
+                var val = UserDataManager.GetDataOrDef(fieldDataNameDict[key][1], fieldDataNameDict[key][0],
+                    fieldDefaultValueDict[key], key.FieldType);
                 key.SetValue(this, val);
             }
 
@@ -126,6 +126,7 @@ namespace ResetCore.Util
                 object attrDefaultValue = attr.defaultValue;
 
                 fieldDataNameDict.Add(fields[i], new string[] { attrGroupName, attrDataName });
+                fieldDefaultValueDict.Add(fields[i], attrDefaultValue);
             }
 
             for (int i = 0; i < methods.Length; i++)
