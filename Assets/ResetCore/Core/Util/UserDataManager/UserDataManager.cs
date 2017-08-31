@@ -24,6 +24,8 @@ namespace ResetCore.Util
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
+        /// <param name="groupName"></param>
+        /// <param name="defValue"></param>
         /// <returns></returns>
         public static T GetDataOrDef<T>(string name, string groupName, T defValue)
         {
