@@ -4,6 +4,7 @@ using System.CodeDom;
 using System.Reflection;
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using UnityEditor;
@@ -163,6 +164,28 @@ namespace ResetCore.CodeDom
             return this;
         }
 
+        /// <summary>
+        /// 添加成员函数
+        /// </summary>
+        /// <param name="returnType"></param>
+        /// <param name="paramDict"></param>
+        /// <param name="statements"></param>
+        /// <returns></returns>
+        public CodeGener AddMemberMethod(Type returnType, Dictionary<string, Type> paramDict, params CodeStatement[] statements)
+        {
+            CodeMemberMethod newMethod = new CodeMemberMethod();
+            newMethod.ReturnType = new CodeTypeReference(returnType);
+            foreach (var keyValuePair in paramDict)
+            {
+                newMethod.Parameters.Add(new CodeParameterDeclarationExpression(keyValuePair.Value, keyValuePair.Key));
+            }
+
+            newMethod.Statements.AddRange(statements);
+
+            newClass.Members.Add(newMethod);
+
+            return this;
+        }
 
         /// <summary>
         /// 生成代码
@@ -206,6 +229,7 @@ namespace ResetCore.CodeDom
         {
             member.Comments.Add(new CodeCommentStatement(new CodeComment(comment, isDoc)));
         }
+
     }
 
     public static class CodeTypeMemberEx

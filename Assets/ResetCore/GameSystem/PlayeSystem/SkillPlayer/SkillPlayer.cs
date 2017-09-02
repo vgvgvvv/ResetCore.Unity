@@ -6,6 +6,8 @@ namespace ResetCore.GameSystem
 {
     public class SkillPlayer : BasePlayer<BasePlayerData>
     {
+
+
         protected override void OnStart()
         {
             

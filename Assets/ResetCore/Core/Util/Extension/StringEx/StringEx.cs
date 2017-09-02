@@ -556,7 +556,7 @@ namespace ResetCore.Util
             }
             if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>)))
             {
-                 int Count = (int)type.GetProperty("Count").GetValue(value, null);
+                int Count = (int)type.GetProperty("Count").GetValue(value, null);
                 if (Count == 0) return String.Empty;
                 MethodInfo mget = type.GetMethod("get_Item", BindingFlags.Instance | BindingFlags.Public);
 

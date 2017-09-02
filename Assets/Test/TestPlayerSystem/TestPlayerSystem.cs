@@ -21,7 +21,7 @@ public class TestPlayerSystem : MonoBehaviour {
         });
 
         //skillPlayer.Start();
-        Debug.Log(skillPlayer.ToJson());
+        //Debug.Log(skillPlayer.ToJson());
     }
 	
 	// Update is called once per frame
