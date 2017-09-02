@@ -16,7 +16,7 @@ namespace ResetCore.Data
             gener.AddImport("ResetCore.Data")
                 .AddBaseType("IDataSerialize");
             
-            
+            //TODO 生成序列化类
 
             gener.GenCSharp(outPath);
 

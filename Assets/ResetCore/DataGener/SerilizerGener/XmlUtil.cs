@@ -225,6 +225,7 @@ namespace ResetCore.Data
             {
                 return ReadDictionary(xml, name, type);
             }
+            //TODO 基本类型的转换
             return null;
         }
         
@@ -411,8 +412,9 @@ namespace ResetCore.Data
             {
                 WriteDictionary(xml, name, val);
             }
+            //TODO 基本类型的转换
         }
-        
+
         /// <summary>
         /// 写入数组
         /// </summary>
