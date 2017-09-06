@@ -15,7 +15,13 @@ namespace ResetCore.NAsset
                 "Assets/StreamingAssets"
                 , "AssetBundles");
 
-        public static readonly string defDownloadBundlePath = PathEx.Combine(Application.persistentDataPath, "AssetBundles");
+        public static string defDownloadBundlePath
+        {
+            get
+            {
+                return PathEx.Combine(Application.persistentDataPath, "AssetBundles");
+            }
+        } 
 
         //Resources资源表
         public static string resourcesListPath
