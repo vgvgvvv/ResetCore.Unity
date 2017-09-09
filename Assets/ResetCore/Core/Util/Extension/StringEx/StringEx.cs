@@ -12,8 +12,10 @@ namespace ResetCore.Util
     /// <summary>
     /// 通过编写方法并且添加属性可以做到转换至String 如：
     /// 
+    /// <example>
     /// [ToString]
-    ///public static string ConvertToString(TestObj obj)
+    /// public static string ConvertToString(TestObj obj)
+    /// </example>
     ///
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
@@ -22,8 +24,10 @@ namespace ResetCore.Util
     /// <summary>
     /// 通过编写方法并且添加属性可以做到转换至String 如：
     /// 
+    /// <example>
     /// [FromString]
     /// public static TestObj ConvertFromString(string str)
+    /// </example>
     ///
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]

@@ -9,24 +9,22 @@ using UnityEngine.Networking;
 
 namespace ResetCore.Data
 {
-    public class SerializedAttribute : Attribute
+    public class ReXmlSerializer
     {
-        public readonly string name;
-        public readonly string defaultValue;
-        public readonly int count = 0;
-        public readonly bool forceExpend = false;
 
-        public SerializedAttribute(string name, string defaultValue = null, int count = 0, bool forceExpend = false)
+        /// <summary>
+        /// 从XmlDocument中读取数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xDoc"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static T ReadFromXmlDocument<T>(XmlDocument xDoc, string name)
         {
-            this.name = name;
-            this.defaultValue = defaultValue;
-            this.count = count;
-            this.forceExpend = forceExpend;
+            var Root = xDoc["Root"];
+            var res = (T)ReXmlSerializer.ReadAny(Root, "TestClass", typeof(T), null);
+            return res;
         }
-    }
-
-    public class XmlUtil
-    {
 
         /// <summary>
         /// 读取字符串，默认为子节点
@@ -206,10 +204,18 @@ namespace ResetCore.Data
         }
         #endregion 基本读取
 
+        /// <summary>
+        /// 读取任何
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
         public static object ReadAny(XmlElement xml, string name, Type type, object defaultValue)
         {
             var node = string.IsNullOrEmpty(name) ? xml : xml.SelectSingleNode(name);
-            if (node.ChildNodes.Count != 0 && node.FirstChild is XmlText)
+            if (IsPrimitive(type))
             {
                 return node.InnerText.GetValue(type);
             }
@@ -225,8 +231,10 @@ namespace ResetCore.Data
             {
                 return ReadDictionary(xml, name, type);
             }
-            //TODO 基本类型的转换
-            return null;
+            else
+            {
+                return ReadObject(xml, name, type);
+            }
         }
         
         /// <summary>
@@ -238,7 +246,7 @@ namespace ResetCore.Data
         /// <returns></returns>
         public static object ReadList(XmlElement xml, string name, Type type)
         {
-            var node = xml.SelectSingleNode(name);
+            var node = name == null? xml : xml.SelectSingleNode(name);
             var addMethod = type.GetMethod("Add");
             System.Type genericArgType = type.GetGenericArguments()[0];
 
@@ -261,7 +269,7 @@ namespace ResetCore.Data
         /// <returns></returns>
         public static object ReadArray(XmlElement xml, string name, Type type)
         {
-            var node = xml.SelectSingleNode(name);
+            var node = name == null ? xml : xml.SelectSingleNode(name);
             Type elementType = Type.GetType(
                 type.FullName.Replace("[]", string.Empty));
             
@@ -286,7 +294,7 @@ namespace ResetCore.Data
         /// <returns></returns>
         public static object ReadDictionary(XmlElement xml, string name, Type type)
         {
-            var node = xml.SelectSingleNode(name);
+            var node = name == null ? xml : xml.SelectSingleNode(name);
             System.Type keyType = type.GetGenericArguments()[0];
             System.Type valueType = type.GetGenericArguments()[1];
             var addMethod = type.GetMethod("Add");
@@ -305,7 +313,61 @@ namespace ResetCore.Data
             return instance;
         }
 
+        /// <summary>
+        /// 读取对象
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object ReadObject(XmlElement xml, string name, Type type)
+        {
+            var node = name == null ? xml : xml.SelectSingleNode(name);
 
+            var obj = Activator.CreateInstance(type);
+
+            foreach (XmlElement nodeChildNode in node.ChildNodes)
+            {
+                var field = type.GetField(nodeChildNode.LocalName);
+                if (field != null && field.GetCustomAttribute<SerializeIgnore>() == null)
+                {
+                    var value = ReadAny(nodeChildNode, null, field.FieldType, null);
+                    field.SetValue(obj, value);
+                }
+
+                var property = type.GetProperty(nodeChildNode.LocalName);
+                if (property != null && property.GetCustomAttribute<SerializeIgnore>() == null)
+                {
+                    var value = ReadAny(nodeChildNode, null, property.PropertyType, null);
+                    property.SetValue(obj, value);
+                }
+            }
+            return obj;
+        }
+
+
+       /// <summary>
+       /// 写入文档
+       /// </summary>
+       /// <param name="name"></param>
+       /// <param name="value"></param>
+       /// <returns></returns>
+        public static XmlDocument WriteToXmlDocument(string name, object value)
+        {
+            XmlDocument xDoc = new XmlDocument();
+            var Root = xDoc.CreateElement("Root");
+            xDoc.AppendChild(Root);
+            ReXmlSerializer.WriteAny(Root, name, value);
+            return xDoc;
+        }
+
+        /// <summary>
+        /// 写入
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="isAttr"></param>
         public static void Write(XmlElement xml, string name, string value, bool isAttr = false)
         {
             if (string.IsNullOrEmpty(name))
@@ -398,11 +460,16 @@ namespace ResetCore.Data
         /// <param name="val"></param>
         public static void WriteAny(XmlElement xml, string name, object val)
         {
+            if (val == null)
+            {
+                return;
+            }
             Type type = val.GetType();
             if (IsPrimitive(type))
             {
-                Write(xml, name, val.ToString());
-            }else if (type.IsArray)
+                Write(xml, name, val.ConverToString());
+            }
+            else if (type.IsArray)
             {
                 WriteArray(xml, name, val);
             }else if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>)))
@@ -412,7 +479,10 @@ namespace ResetCore.Data
             {
                 WriteDictionary(xml, name, val);
             }
-            //TODO 基本类型的转换
+            else
+            {
+                WriteObejct(xml, name, val);
+            }
         }
 
         /// <summary>
@@ -436,9 +506,7 @@ namespace ResetCore.Data
 
             for (int i = 0; i < realArray.Length; i++)
             {
-                var item = xml.OwnerDocument.CreateElement("item");
-                WriteAny(item, null, realArray.GetValue(i));
-                node.AppendChild(item);
+                WriteAny(node, "item", realArray.GetValue(i));
             }
         }
 
@@ -465,10 +533,8 @@ namespace ResetCore.Data
             object item;
             for (int i = 0; i < Count; i++)
             {
-                var itemNode = xml.OwnerDocument.CreateElement("item");
                 item = mget.Invoke(array, new object[] { i });
-                WriteAny(itemNode, null, item);
-                node.AppendChild(itemNode);
+                WriteAny(node, "item", item);
             }
         }
 
@@ -518,13 +584,45 @@ namespace ResetCore.Data
 
         }
 
+        /// <summary>
+        /// 写入
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="name"></param>
+        /// <param name="obj"></param>
+        public static void WriteObejct(XmlElement xml, string name, object obj)
+        {
+            var node = xml.OwnerDocument.CreateElement(name);
+            xml.AppendChild(node);
 
+            Type type = obj.GetType();
 
+            var fields = type.GetFields();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                var currentField = fields[i];
+                if (currentField.GetCustomAttribute<SerializeIgnore>() != null)
+                    continue;
+                WriteAny(node, currentField.Name, currentField.GetValue(obj));
+            }
+
+            var properties = type.GetProperties();
+            for (int i = 0; i < properties.Length; i++)
+            {
+                var currentProperty = properties[i];
+                if (currentProperty.GetCustomAttribute<SerializeIgnore>() != null)
+                    continue;
+                WriteAny(node, currentProperty.Name, currentProperty.GetValue(obj, null));
+            }
+
+        }
 
 
         static bool IsPrimitive(Type type)
         {
-            return type.IsPrimitive || type == typeof(string) || type.IsEnum;
+            return type.IsPrimitive || type == typeof(string) || type.IsEnum
+                || type == typeof(Vector2) || type == typeof(Vector3) || type == typeof(Vector4)
+                   || type == typeof(Quaternion) || type == typeof(Color);
         }
 
         //static bool IsExpend(Type type)

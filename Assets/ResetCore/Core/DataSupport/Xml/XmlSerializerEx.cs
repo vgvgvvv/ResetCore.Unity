@@ -13,7 +13,7 @@ namespace ResetCore.Xml
     /// <summary>
     /// Xml序列化与反序列化
     /// </summary>
-    public static class XmlUtil
+    public static class XmlSerializerEx
     {
         #region 反序列化
         /// <summary>

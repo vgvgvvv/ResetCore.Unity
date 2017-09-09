@@ -36,7 +36,7 @@ namespace ResetCore.PlatformHelper
             var configPath = args["configPath"];
 
             XDocument xDoc = XDocument.Load(configPath);
-            BuildFile config = XmlUtil.Deserialize<BuildFile>(xDoc);
+            BuildFile config = XmlSerializerEx.Deserialize<BuildFile>(xDoc);
 
             PlayerSettings.applicationIdentifier = config.packageName;
             PlayerSettings.productName = config.appName;

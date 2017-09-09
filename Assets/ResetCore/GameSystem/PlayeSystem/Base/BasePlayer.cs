@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ResetCore.Util;
 using UnityEngine;
 using LitJson;
+using ResetCore.Data;
 using ResetCore.Json;
 
 namespace ResetCore.GameSystem
@@ -16,15 +17,16 @@ namespace ResetCore.GameSystem
 
     public abstract class BasePlayer
     {
-
         /// <summary>
         /// Player运行状态
         /// </summary>
+        [SerializeIgnore]
         public PlayerState state { get; protected set; }
 
         /// <summary>
         /// 经过的时间
         /// </summary>
+        [SerializeIgnore]
         public float pastTime { get; protected set; }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace ResetCore.GameSystem
         /// <summary>
         /// 子播放器
         /// </summary>
-        protected BasePlayer[] childPlayerList { get; set; }
+        public BasePlayer[] childPlayerList { get; protected set; }
 
         private ReCoroutineTaskManager.CoroutineTask coroutine;
 
@@ -163,22 +165,6 @@ namespace ResetCore.GameSystem
             delayTime = data.delayTime;
             childPlayerList = playerList??new BasePlayer[0];
         }
-
-
-        //public string ToJson()
-        //{
-        //    JsonData jsonData = new JsonData();
-        //    jsonData["Data"] = data.ToJsonData();
-        //    jsonData["child"] = childPlayerList.ToJsonData();
-        //    return jsonData.ToJson();
-        //}
-
-        //public TPlayer FromPlayer<TPlayer>(string json) where TPlayer : BasePlayer<T>
-        //{
-        //    JsonData jsonData = JsonMapper.ToObject(json);
-        //    data = jsonData["Data"].ConvertTo<T>();
-        //    var childList = jsonData["child"];
-        //}
 
     }
 }
