@@ -1,5 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using ResetCore.Data;
 using ResetCore.GameSystem;
 using UnityEngine;
 
@@ -19,13 +22,14 @@ public class TestPlayerSystem : MonoBehaviour {
 	    {
 	        player1, player2
         });
+	    skillPlayer.Start();
 
-        //skillPlayer.Start();
-        //Debug.Log(skillPlayer.ToJson());
+        //Debug.Log(ReXmlSerializer.WriteToXmlDocument("SkillPlayer", skillPlayer).InnerXml);
+	    
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    public void Save(Stream stream)
+    {
+    }
 }
