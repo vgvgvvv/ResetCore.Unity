@@ -45,9 +45,9 @@ namespace ResetCore.Data
         }
 
         /// <summary>
-        ///  导出选中的Excel为Scriptable Object（暂时不可用）
+        ///  导出选中的Excel为Scriptable Object
         /// </summary>
-        [MenuItem("Assets/DataHelper/Scriptable Object/Export Selected Excel（暂时不可用）")]
+        [MenuItem("Assets/DataHelper/Scriptable Object/Export Selected Excel）")]
         public static void ExportAllSelectedExcelToScriptableObject()
         {
             ExportAllSelectExcel(new Source2ScrObj());
@@ -63,14 +63,6 @@ namespace ResetCore.Data
             });
         }
 
-        /// <summary>
-        /// 打开本地化Excel
-        /// </summary>
-        [MenuItem("Tools/GameData/Language/Open Localization Excel")]
-        static void OpenLanguageExcel()
-        {
-            EditorUtility.OpenWithDefaultApp(PathConfig.LanguageDataExcelPath);
-        }
 
         private static void ExportData(Action<string, string> genAction)
         {
