@@ -41,7 +41,8 @@ public class PathConfig
 
     //Resources路径
     public static readonly string resourcePath = Application.dataPath + "/Resources/";
-    #endregion
+
+    #endregion 全局
 
 
 

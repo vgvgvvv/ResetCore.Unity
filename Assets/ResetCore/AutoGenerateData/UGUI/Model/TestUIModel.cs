@@ -21,7 +21,7 @@ namespace ResetCore.UGUI.Model
         
         public TestUIModel()
         {
-            // From g-Money@txtMoney->money:string
+            // From g-Money@txt->money:string
 money = new EventProperty<string>();
         }
         

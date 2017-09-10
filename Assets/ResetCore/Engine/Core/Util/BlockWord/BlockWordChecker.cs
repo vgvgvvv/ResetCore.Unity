@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using ResetCore.Asset;
+using ResetCore.IOC;
 
 namespace ResetCore.Util
 {
     public class BlockWordChecker
     {
 
-        private static string textFileName = "BlockWord/BlockWord";
+        private static readonly string bundleName = "data";
+        private static readonly string fileName = "BlockWord";
 
         private static BlockWordChecker _instance;
         public static BlockWordChecker Instance
@@ -43,7 +45,9 @@ namespace ResetCore.Util
         //读取文件
         private void ReadFromFile()
         {
-            string content = Resources.Load<TextAsset>(textFileName).text;
+            var loader = ApplicationContext.context.GetSingleton(typeof(IBundleLoader)) as IBundleLoader;
+            loader.LoadBundleSync(bundleName);
+            string content = loader.GetText(bundleName, fileName).text;
             string[] blockWords = content.Split('#');
             blockWordList = new List<string>(blockWords);
 

@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class TestCodeContext : CodeContext<TestCodeContext> {
 
-	[Bean]
+    [Bean]
     public TestUIView GetView()
     {
         var v = new TestUIView();
