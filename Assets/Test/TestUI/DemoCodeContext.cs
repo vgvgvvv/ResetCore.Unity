@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Import(typeof(TestContext))]
-public class DemoContext : Context<DemoContext> {
+[ImportCodeContext(typeof(TestCodeContext))]
+public class DemoCodeContext : CodeContext<DemoCodeContext> {
 
 	
 }

@@ -30,7 +30,7 @@ namespace ResetCore.NAsset
             Bundle = bundle;
 
             //解析资源包
-            //ParseAssetBundle();
+            ParseAssetBundle();
 
             assetTable[typeof(Sprite)] = new Hashtable();
             assetTable[typeof(TextAsset)] = new Hashtable();

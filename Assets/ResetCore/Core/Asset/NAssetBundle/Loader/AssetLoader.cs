@@ -15,29 +15,12 @@ namespace ResetCore.NAsset
         /// <summary>
         /// 已经加载的Bundle
         /// </summary>
-        private static Dictionary<string, AssetBundle> loadedBundle = new Dictionary<string, AssetBundle>();
+        private static readonly Dictionary<string, AssetBundle> loadedBundle = new Dictionary<string, AssetBundle>();
+
         /// <summary>
         /// 未加载的Bundle
         /// </summary>
-        private static Dictionary<string, BundleResources> bundleResources = new Dictionary<string, BundleResources>();
-
-        public static void LoadAndCallback(string bundleName,
-            ThreadPriority priority = ThreadPriority.High,
-            Action<float> progressAct = null, Action callBack = null)
-        {
-            CoroutineTaskManager.Instance.AddTask(LoadBundleAsyc(bundleName), (bo) =>
-            {
-                if (bo)
-                {
-                    if (callBack != null)
-                        callBack();
-                }else
-                {
-                    Debug.LogError("加载失败");
-                }
-                
-            });
-        }
+        private static readonly Dictionary<string, BundleResources> bundleResources = new Dictionary<string, BundleResources>();
 
         /// <summary>
         /// 异步加载Bundle
@@ -45,32 +28,46 @@ namespace ResetCore.NAsset
         /// <param name="bundleName"></param>
         /// <param name="priority"></param>
         /// <param name="progressAct"></param>
+        /// <param name="callBack"></param>
         /// <returns></returns>
         public static IEnumerator LoadBundleAsyc(string bundleName, 
             ThreadPriority priority = ThreadPriority.High, 
-            Action<float> progressAct = null)
+            Action<float> progressAct = null, Action<AssetBundle> callBack = null)
         {
             if (HasLoaded(bundleName))
             {
+                if(callBack != null)
+                    callBack(GetBundle(bundleName));
                 yield break;
             }
 
             yield return DownloadAsyc(bundleName, priority, progressAct, (bundle)=> {
                 loadedBundle.Add(bundleName, bundle);
                 loadedBundle[bundleName].name = bundleName;
-                bundleResources.Add(bundleName, new BundleResources(loadedBundle[bundleName]));
+                bundleResources.Add(bundleName, new BundleResources(bundle));
+                if (callBack != null)
+                    callBack(bundle);
                 Debug.Log("loaded " + bundleName);
             });
 
         }
 
-        public static void LoadBundleSync(string bundleName)
+        /// <summary>
+        /// 同步加载Bundle
+        /// </summary>
+        /// <param name="bundleName"></param>
+        public static AssetBundle LoadBundleSync(string bundleName)
         {
             if (HasLoaded(bundleName))
             {
-                return;
+                return GetBundle(bundleName);
             }
-
+            var bundle = DownloadSync(bundleName);
+            loadedBundle.Add(bundleName, bundle);
+            loadedBundle[bundleName].name = bundleName;
+            bundleResources.Add(bundleName, new BundleResources(bundle));
+            Debug.Log("loaded " + bundleName);
+            return bundle;
         }
 
         private static IEnumerator DownloadAsyc(string bundleName, ThreadPriority priority, Action<float> progressAct, Action<AssetBundle> callback)
@@ -81,6 +78,8 @@ namespace ResetCore.NAsset
             bool isPersistentFileExist = FileManager.IsPersistentFileExist(path);
             bool isStreamFileExist = FileManager.IsStreamFileExist(path);
             bool isResourcesFileExist = FileManager.IsResourceFileExist(path);
+
+            //寻找顺序：沙盒目录、Resources、StreamingAssets
             if(isPersistentFileExist)
             {
                 downloadPath = FileManager.PersistentFileWWWPath(path);
@@ -97,8 +96,37 @@ namespace ResetCore.NAsset
             }
             else
             {
-                Debug.LogError("未找到文件");
-                yield break;
+                Debug.LogError("未找到文件 " + bundleName);
+            }
+        }
+
+        private static AssetBundle DownloadSync(string bundleName)
+        {
+            string path = PathEx.Combine(NAssetPaths.defBundleFolderName, bundleName);
+            string downloadPath = "";
+
+            bool isPersistentFileExist = FileManager.IsPersistentFileExist(path);
+            bool isStreamFileExist = FileManager.IsStreamFileExist(path);
+            bool isResourcesFileExist = FileManager.IsResourceFileExist(path);
+            //寻找顺序：沙盒目录、Resources、StreamingAssets
+            if (isPersistentFileExist)
+            {
+                downloadPath = FileManager.PersistentFileWWWPath(path);
+                return PersistentDownloadSync(downloadPath);
+            }
+            else if (isResourcesFileExist)
+            {
+                return ResourcesDownloadSync(path);
+            }
+            else if (isStreamFileExist)
+            {
+                downloadPath = FileManager.StreamFileWWWPath(path);
+                return StreamingDownloadSync(downloadPath);
+            }
+            else
+            {
+                Debug.LogError("未找到文件 " + bundleName);
+                return null;
             }
         }
 
@@ -135,6 +163,16 @@ namespace ResetCore.NAsset
             if (callback != null)
                 callback(request.assetBundle);
 
+        }
+
+        /// <summary>
+        /// 同步加载沙盒目录
+        /// </summary>
+        /// <param name="downloadPath"></param>
+        /// <returns></returns>
+        public static AssetBundle PersistentDownloadSync(string downloadPath)
+        {
+            return AssetBundle.LoadFromFile(downloadPath);
         }
 
         /// <summary>
@@ -192,6 +230,24 @@ namespace ResetCore.NAsset
         }
 
         /// <summary>
+        /// 同步从Resource中加载
+        /// </summary>
+        /// <param name="downloadPath"></param>
+        /// <returns></returns>
+        public static AssetBundle ResourcesDownloadSync(string downloadPath)
+        {
+            var textAsset = Resources.Load<TextAsset>(downloadPath);
+            if (textAsset == null)
+            {
+                Debug.LogError(downloadPath + " 从Resources中加载失败");
+                return null;
+            }
+            var asset = AssetBundle.LoadFromMemory(textAsset.bytes);
+            Resources.UnloadAsset(textAsset);
+            return asset;
+        }
+
+        /// <summary>
         /// 使用流媒体下载
         /// </summary>
         /// <param name="downloadPath"></param>
@@ -223,7 +279,16 @@ namespace ResetCore.NAsset
 
             if (callback != null)
                 callback(request.assetBundle);
+        }
 
+        /// <summary>
+        /// 流媒体同步下载
+        /// </summary>
+        /// <param name="downloadPath"></param>
+        /// <returns></returns>
+        public static AssetBundle StreamingDownloadSync(string downloadPath)
+        {
+            return AssetBundle.LoadFromFile(downloadPath);
         }
 
         /// <summary>
@@ -249,7 +314,7 @@ namespace ResetCore.NAsset
         {
             if(HasLoaded(name))
                 return loadedBundle[name];
-            return null;
+            return LoadBundleSync(name);
         }
 
 

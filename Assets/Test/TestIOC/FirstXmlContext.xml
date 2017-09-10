@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <imports>
+    <importxml bundleName = "xxxx" xmlName = "xxxx"/>
+    <importcode type="xxx"/>
+  </imports>
+  <beans>
+    <bean type="IView">TestView</bean>
+    <bean type="IView" name="TestView">TestView</bean>
+  </beans>
+</Root>

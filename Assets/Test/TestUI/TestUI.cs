@@ -9,7 +9,8 @@ using ResetCore.UGUI.Model;
 using System.Xml.Linq;
 using ResetCore.UGUI.Binder;
 
-[InContext(typeof(DemoContext))]
+[InCodeContext(typeof(DemoCodeContext))]
+[InXmlContext("xmlBundle.xml")]
 public class TestUI : BaseNormalUI {
 
     [Inject]

@@ -20,12 +20,22 @@ namespace ResetCore.IOC
         }
     }
 
-    public class InContext : Attribute
+    public class InCodeContext : Attribute
     {
         public Type[] contextTypes { get; private set; }
-        public InContext(params Type[] contextTypes)
+        public InCodeContext(params Type[] contextTypes)
         {
             this.contextTypes = contextTypes;
+        }
+    }
+
+    public class InXmlContext : Attribute
+    {
+        public string[] contextPaths { get; private set; }
+
+        public InXmlContext(params string[] contextPaths)
+        {
+            this.contextPaths = contextPaths;
         }
     }
 
@@ -50,30 +60,40 @@ namespace ResetCore.IOC
         protected virtual void Awake()
         {
             behaviorType = GetType();
-            var incontexts = behaviorType.GetCustomAttributes(typeof(InContext), true);
-            for(int i = 0; i < incontexts.Length; i++)
+
+            var inCodeContexts = behaviorType.GetCustomAttributes(typeof(InCodeContext), true);
+            for(int i = 0; i < inCodeContexts.Length; i++)
             {
-                var incontext = (InContext)incontexts[i];
+                var incontext = (InCodeContext)inCodeContexts[i];
                 for (int j = 0; j < incontext.contextTypes.Length; j++)
                 {
-                    var contextType = typeof(Context<>);
+                    var contextType = typeof(CodeContext<>);
                     contextType = contextType.MakeGenericType(incontext.contextTypes[j]);
                     var prop = contextType.GetProperty("context");
 
-                    Context context = prop.GetValue(null, null) as Context;
-                    InjectMember(context);
+                    CodeContext codeContext = prop.GetValue(null, null) as CodeContext;
+                    InjectMember(codeContext);
                 }
             }
-            
+
+            var inXmlContexts = behaviorType.GetCustomAttributes(typeof(InXmlContext), true);
+            for (int i = 0; i < inXmlContexts.Length; i++)
+            {
+                var incontext = (InXmlContext)inCodeContexts[i];
+                var paths = incontext.contextPaths;
+                for (int j = 0; j < paths.Length; j++)
+                {
+                    var codeContext = XmlContext.GetContext(paths[j]);
+                    InjectMember(codeContext);
+                }
+            }
         }
 
         /// <summary>
         /// 注入成员
         /// </summary>
-        private void InjectMember(Context context)
+        private void InjectMember(Context codeContext)
         {
-           
-
             properties = behaviorType.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             for(int i = 0; i < properties.Length; i++)
             {
@@ -82,9 +102,9 @@ namespace ResetCore.IOC
                     && injectAttr != null)
                 {
                     if (injectAttr.isSingleton)
-                        properties[i].SetValue(this, context.GetSingleton(properties[i].PropertyType), new object[0]);
+                        properties[i].SetValue(this, codeContext.GetSingleton(properties[i].PropertyType), new object[0]);
                     else
-                        properties[i].SetValue(this, context.GetNew(properties[i].PropertyType), new object[0]);
+                        properties[i].SetValue(this, codeContext.GetNewInstance(properties[i].PropertyType), new object[0]);
                 }
             }
 
@@ -95,9 +115,9 @@ namespace ResetCore.IOC
                 if (injectAttr != null)
                 {
                     if (injectAttr.isSingleton)
-                        fields[i].SetValue(this, context.GetSingleton(fields[i].FieldType));
+                        fields[i].SetValue(this, codeContext.GetSingleton(fields[i].FieldType));
                     else
-                        fields[i].SetValue(this, context.GetNew(fields[i].FieldType));
+                        fields[i].SetValue(this, codeContext.GetNewInstance(fields[i].FieldType));
 
                 }
             }

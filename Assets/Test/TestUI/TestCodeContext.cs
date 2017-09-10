@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestContext : Context<TestContext> {
+public class TestCodeContext : CodeContext<TestCodeContext> {
 
 	[Bean]
     public TestUIView GetView()
