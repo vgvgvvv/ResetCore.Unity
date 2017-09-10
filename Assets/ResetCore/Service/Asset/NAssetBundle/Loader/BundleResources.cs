@@ -38,6 +38,7 @@ namespace ResetCore.NAsset
             assetTable[typeof(Material)] = new Hashtable();
             assetTable[typeof(Shader)] = new Hashtable();
             assetTable[typeof(GameObject)] = new Hashtable();
+            assetTable[typeof(ScriptableObject)] = new Hashtable();
         }
 
         /// <summary>
@@ -86,6 +87,13 @@ namespace ResetCore.NAsset
             foreach (GameObject obj in objs)
                 objTable[obj.name] = obj;
             assetTable[typeof(GameObject)] = objTable;
+
+            //解析ScriptableObject
+            ScriptableObject[] scrobjs = Bundle.LoadAllAssets<ScriptableObject>();
+            Hashtable scrobjTable = new Hashtable();
+            foreach (ScriptableObject obj in scrobjs)
+                scrobjTable[obj.name] = obj;
+            assetTable[typeof(ScriptableObject)] = scrobjTable;
         }
 
         /// <summary>
@@ -251,6 +259,26 @@ namespace ResetCore.NAsset
             return obj;
         }
 
+        /// <summary>
+        /// 获取ScriptableObject
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ScriptableObject GetScriptableObject(string name)
+        {
+            Hashtable objTable = assetTable[typeof(ScriptableObject)] as Hashtable;
+
+            if (objTable[name] != null)
+                return objTable[name] as ScriptableObject;
+
+            ScriptableObject obj = Bundle.LoadAsset<ScriptableObject>(name);
+
+            if (obj != null)
+                objTable[name] = obj;
+
+            return obj;
+        }
+
         public void Reset()
         {
             Hashtable spriteTable = assetTable[typeof(Sprite)] as Hashtable;
@@ -260,6 +288,7 @@ namespace ResetCore.NAsset
             Hashtable matTable = assetTable[typeof(Material)] as Hashtable;
             Hashtable shaderTable = assetTable[typeof(Shader)] as Hashtable;
             Hashtable objTable = assetTable[typeof(GameObject)] as Hashtable;
+            Hashtable scrobjTable = assetTable[typeof(ScriptableObject)] as Hashtable;
 
             if (spriteTable != null)
                 spriteTable.Clear();
@@ -275,6 +304,8 @@ namespace ResetCore.NAsset
                 shaderTable.Clear();
             if (objTable != null)
                 objTable.Clear();
+            if (scrobjTable != null)
+                scrobjTable.Clear();
 
             assetTable.Clear();
         }

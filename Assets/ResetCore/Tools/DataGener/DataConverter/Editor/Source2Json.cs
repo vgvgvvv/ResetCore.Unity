@@ -6,6 +6,7 @@ using LitJson;
 using System.IO;
 using ResetCore.Json;
 using ResetCore.Data;
+using ResetCore.Util;
 
 namespace ResetCore.Data
 {
@@ -56,6 +57,9 @@ namespace ResetCore.Data
 
             data.Save(outputPath);
 
+            AssetDatabase.Refresh();
+            var ai = AssetImporter.GetAtPath(PathEx.ConvertAbstractToAssetPath(outputPath));
+            ai.assetBundleName = PathConfig.DataBundleName;
             AssetDatabase.Refresh();
         }
 

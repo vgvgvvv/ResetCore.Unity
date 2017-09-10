@@ -105,5 +105,13 @@ namespace ResetCore.Asset
         /// <param name="resName"></param>
         /// <returns></returns>
         GameObject GetGameObject(string bundleName, string resName);
+
+        /// <summary>
+        /// 获取ScriptableObject
+        /// </summary>
+        /// <param name="bundleName"></param>
+        /// <param name="resName"></param>
+        /// <returns></returns>
+        ScriptableObject GetScriptableObject(string bundleName, string resName);
     }
 }

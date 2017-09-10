@@ -8,6 +8,11 @@ namespace ResetCore.NAsset
 {
     public class DefaultLoader : IBundleLoader
     {
+        public ScriptableObject GetScriptableObject(string bundleName, string resName)
+        {
+            return AssetLoader.GetScriptableObject(bundleName, resName);
+        }
+
         public AudioClip GetAudio(string bundleName, string resName)
         {
             return AssetLoader.GetAudio(bundleName, resName);

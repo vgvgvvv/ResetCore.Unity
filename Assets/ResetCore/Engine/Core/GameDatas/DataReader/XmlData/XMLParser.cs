@@ -13,10 +13,10 @@ namespace ResetCore.Xml
     public class XMLParser
     {
         //创建表
-        public static bool LoadIntMap(string fileName, out Dictionary<int, Dictionary<string, string>> dicFromXml, string rootPath = null)
+        public static bool LoadIntMap(string fileName, out Dictionary<int, Dictionary<string, string>> dicFromXml)
         {
 
-            XDocument xDoc = XDocument.Parse(DataUtil.LoadFile(fileName, rootPath));
+            XDocument xDoc = XDocument.Parse(DataUtil.LoadFile(fileName));
             XElement root = xDoc.Root;
             dicFromXml = new Dictionary<int, Dictionary<string, string>>();
             if (xDoc == null) return false;
@@ -45,9 +45,9 @@ namespace ResetCore.Xml
         }
         
         //创建Instance
-        public static bool LoadInstance(string fileName, out Dictionary<string, string> dicFromXml, string rootPath = null)
+        public static bool LoadInstance(string fileName, out Dictionary<string, string> dicFromXml)
         {
-            XDocument xDoc = XDocument.Parse(DataUtil.LoadFile(fileName, rootPath));
+            XDocument xDoc = XDocument.Parse(DataUtil.LoadFile(fileName));
             XElement root = xDoc.Root;
             dicFromXml = new Dictionary<string, string>();
 

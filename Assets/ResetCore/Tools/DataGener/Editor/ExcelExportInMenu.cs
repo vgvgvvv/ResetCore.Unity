@@ -64,16 +64,6 @@ namespace ResetCore.Data
         }
 
         /// <summary>
-        /// 导出所有本地化数据
-        /// </summary>
-        [MenuItem("Assets/DataHelper/Excel/Language/Export All Localization File")]
-        [MenuItem("Tools/GameData/Language/Export All Localization File By Excel")]
-        static void ExportLanguageFile()
-        {
-            Source2Localization.ExportExcelFile();
-        }
-
-        /// <summary>
         /// 打开本地化Excel
         /// </summary>
         [MenuItem("Tools/GameData/Language/Open Localization Excel")]

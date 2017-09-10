@@ -93,22 +93,15 @@ namespace ResetCore.Data
         /// <param name="fileName"></param>
         /// <param name="fileEnd">后缀</param>
         /// <returns></returns>
-        public static string LoadFile(string fileName, string rootPath = null)
+        public static string LoadFile(string fileName)
         {
             TextAsset textAsset = null;
-            Debug.Log(PathConfig.GetLocalGameDataResourcesPath(PathConfig.DataType.Pref) + fileName);
-            //var loader = ApplicationContext.context.GetSingleton(typeof(IBundleLoader)) as IBundleLoader;
-            //TODO 替换各种加载器
-            if (rootPath == null)
-            {
-                textAsset =
-                    Resources.Load<TextAsset>(PathConfig.GetLocalGameDataResourcesPath(PathConfig.DataType.Pref) + fileName);
-            }
-            else
-            {
-                textAsset =
-                    Resources.Load<TextAsset>(PathEx.Combine(rootPath, fileName).Replace("\\", "/"));
-            }
+            
+            var loader = ApplicationContext.context.GetSingleton(typeof(IBundleLoader)) as IBundleLoader;
+
+            loader.LoadBundleSync(PathConfig.DataBundleName);
+            textAsset = loader.GetText(PathConfig.DataBundleName, fileName);
+
             if (textAsset == null)
             {
                 Debug.unityLogger.LogError("XMLParser", fileName + " 文本加载失败");
@@ -123,8 +116,8 @@ namespace ResetCore.Data
         /// <returns></returns>
         public static object LoadScriptableObject(string fileName)
         {
-            //TODO 替换各种加载器
-            return Resources.Load("GameData/Obj/" + fileName);
+            var loader = ApplicationContext.context.GetSingleton(typeof(IBundleLoader)) as IBundleLoader;
+            return loader.GetScriptableObject(PathConfig.DataBundleName, fileName);
         }
     }
 

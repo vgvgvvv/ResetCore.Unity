@@ -516,6 +516,16 @@ namespace ResetCore.NAsset
             return GetGameObject(Rl[0], Rl[1]);
         }
 
+        public static ScriptableObject GetScriptableObject(string bundleName, string resName)
+        {
+#if UNITY_EDITOR
+            var res = GetEditorAsset<ScriptableObject>(resName, bundleName);
+            if (res != null)
+                return res;
+#endif
+            BundleResources resource = bundleResources[bundleName] as BundleResources;
+            return resource != null ? resource.GetScriptableObject(resName) : null;
+        }
 
 #if UNITY_EDITOR
         /// <summary>

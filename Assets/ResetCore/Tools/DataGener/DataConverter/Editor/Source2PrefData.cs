@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using ResetCore.Data.GameDatas.Xml;
 using System;
+using ResetCore.Util;
 
 namespace ResetCore.Data
 {
@@ -44,6 +45,9 @@ namespace ResetCore.Data
             }
 
             xDoc.Save(outputPath);
+            AssetDatabase.Refresh();
+            var ai = AssetImporter.GetAtPath(PathEx.ConvertAbstractToAssetPath(outputPath));
+            ai.assetBundleName = PathConfig.DataBundleName;
             AssetDatabase.Refresh();
         }
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using ResetCore.Util;
 using ResetCore.Asset;
 
-public class PathConfig
+public partial class PathConfig
 {
 
     #region 全局
@@ -13,7 +13,7 @@ public class PathConfig
     public static string PluginsFolderName = "Plugins";
 
     //ResetCore根目录
-    public static string ResetCorePath = Application.dataPath + "/ResetCore/";
+    public static readonly string ResetCorePath = Application.dataPath + "/ResetCore/";
 
     //Plugins目录
     public static readonly string pluginPath = Path.Combine(Application.dataPath, PluginsFolderName);
@@ -44,8 +44,6 @@ public class PathConfig
 
     #endregion 全局
 
-
-
     #region GameData相关
 
     public enum DataType
@@ -58,6 +56,9 @@ public class PathConfig
         Localization,
         Core
     }
+
+    //数据所在的Bundle名
+    public static readonly string DataBundleName = "data";
 
     //Excelm默认存放地址
     public static readonly string localGameDataExcelPath = Application.dataPath + "/Excel/";
@@ -90,16 +91,21 @@ public class PathConfig
     /// <summary>
     /// 本地化数据存放地址
     /// </summary>
-    public static readonly string LanguageDataExcelPath = 
-        PathEx.Combine(ResetCorePath, "Tools/DataGener", "Localization/Excel/LocalizationData.xlsx");
+    public static string LanguageDataExcelPath
+    {
+        get
+        {
+            return PathEx.Combine(ResetCorePath, "Tools/DataGener", "Localization/Excel/LocalizationData.xlsx");
+        }
+    }
 
     //存放本地化数据的地址
-    public static readonly string LanguageDataPath = 
+    public static readonly string LanguageDataPath =
         PathConfig.GetLocalGameDataPath(DataType.Localization) + "LocalizationData.xml";
     //存放PrefData GameData类的地址
-    public static readonly string localLanguageDataClassPath = 
+    public static readonly string localLanguageDataClassPath =
         PathConfig.GetLoaclGameDataClassPath(DataType.Localization) + "LocalizationData.cs";
 
-#endregion
+    #endregion
 
 }

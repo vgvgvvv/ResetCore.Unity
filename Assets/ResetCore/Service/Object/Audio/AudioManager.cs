@@ -134,15 +134,7 @@ namespace ResetCore.ResObject
         private AudioSource PlayObject(GameObject go, string clipBundle, string clipName, float volume, float time, AudioMixerGroup mixerGroup = null, bool isLoop = false, bool fadeIn = false)
         {
             AudioSource audioSource = go.GetOrCreateComponent<AudioSource>();
-#if DATA_GENER
-            if (isLocalization)
-            {
-                if (LanguageManager.ContainKey(clipName))
-                {
-                    clipName = LanguageManager.GetWord(clipName);
-                }
-            }
-#endif
+
             audioSource.clip = AssetLoader.GetAudio(clipBundle, clipName);
             audioSource.outputAudioMixerGroup = mixerGroup;
             audioSource.loop = isLoop;
