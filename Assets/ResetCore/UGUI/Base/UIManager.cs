@@ -2,6 +2,8 @@
 using System.Collections;
 using ResetCore.Util;
 using System.Collections.Generic;
+using ResetCore.Asset;
+using ResetCore.IOC;
 using ResetCore.NAsset;
 
 
@@ -11,11 +13,14 @@ namespace ResetCore.UGUI
 
     public class UIManager : MonoSingleton<UIManager>
     {
-
+        /// <summary>
+        /// 加载器
+        /// </summary>
+        private IBundleLoader loader;
 
         void Awake()
         {
-
+            loader = ApplicationContext.context.GetSingleton(typeof(IBundleLoader)) as IBundleLoader;
         }
 
         void Start()
@@ -60,7 +65,7 @@ namespace ResetCore.UGUI
                 if (uiDic[name] == null)
                 {
                     BaseUI newUI = GameObject.Instantiate(
-                        AssetLoader.GetGameObject(UIConst.UIPrefabBundleDic[name],
+                        loader.GetGameObject(UIConst.UIPrefabBundleDic[name],
                         UIConst.UIPrefabNameDic[name])).GetComponent<BaseUI>();
                     uiDic[name] = newUI;
                 }
@@ -72,7 +77,7 @@ namespace ResetCore.UGUI
             else
             {
                 BaseUI newUI = GameObject.Instantiate(
-                    AssetLoader.GetGameObject(UIConst.UIPrefabBundleDic[name], 
+                    loader.GetGameObject(UIConst.UIPrefabBundleDic[name], 
                     UIConst.UIPrefabNameDic[name])).GetComponent<BaseUI>();
                 newUI.Init(arg);
                 uiDic.Add(name, newUI);
