@@ -69,6 +69,11 @@ namespace ResetCore.Data.GameDatas.Xml
                 return condition(data);
             });
         }
+
+        public static void Init()
+        {
+            XmlData<T>.m_dataMap = XmlData.GetDataMap<T>();
+        }
     }
 
     class XmlDataController

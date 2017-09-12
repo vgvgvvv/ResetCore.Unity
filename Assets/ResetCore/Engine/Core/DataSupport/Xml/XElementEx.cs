@@ -150,6 +150,31 @@ namespace ResetCore.Xml
             return result;
         }
 
+        /// <summary>
+        /// 获取Attribute
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="attributeName"></param>
+        /// <returns></returns>
+        public static string GetAttribute(this XElement element, string attributeName)
+        {
+            return GetAttributeOrDefult(element, attributeName, null);
+        }
+        /// <summary>
+        /// 获得Attribute或者默认值
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="attributeName"></param>
+        /// <param name="defult"></param>
+        /// <returns></returns>
+        public static string GetAttributeOrDefult(this XElement element, string attributeName, string defult)
+        {
+            var attr = element.Attribute(attributeName);
+            if (attr == null || string.IsNullOrEmpty(attr.Value))
+                return defult;
+            return attr.Value;
+        }
+
 
     }
 

@@ -92,6 +92,34 @@ namespace ResetCore.ReAssembly
         }
 
         /// <summary>
+        /// 通过类的完整名称来获得
+        /// </summary>
+        /// <param name="typeFullName"></param>
+        /// <returns></returns>
+        public static Type GetAssemblyType(string typeFullName)
+        {
+            int pointPos = typeFullName.LastIndexOf(".", StringComparison.Ordinal);
+            string assemblyName = null;
+            string typeName = null;
+            if (pointPos > 0)
+            {
+                assemblyName = typeFullName.Substring(0, pointPos);
+                typeName = typeFullName.Substring(pointPos);
+            }
+            else
+            {
+                typeName = typeFullName;
+            }
+
+            var orgType = assemblyName == null
+                ? GetDefaultAssemblyType(typeName)
+                : GetAssemblyType(assemblyName, typeName);
+
+            return orgType;
+        }
+
+
+        /// <summary>
         /// 获取默认的程序集
         /// </summary>
         /// <param name="typeName"></param>
@@ -101,6 +129,7 @@ namespace ResetCore.ReAssembly
             Type t = AssemblyManager.DefaultCSharpAssembly.GetType(typeName);
             return t;
         }
+
 
         public static Type[] GetTypeList(string assemblyName)
         {

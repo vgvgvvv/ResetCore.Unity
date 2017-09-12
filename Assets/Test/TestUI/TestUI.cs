@@ -25,7 +25,8 @@ public class TestUI : BaseNormalUI {
     {
         base.Awake();
         v.Init(this);
-        b.Bind(v, m);
+        v.txtMoney.Bind(m.money);
+        v.inputInputField.Bind(m.money);
     }
 
     public void OnTestButton()
