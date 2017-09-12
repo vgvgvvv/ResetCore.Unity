@@ -76,7 +76,7 @@ namespace ResetCore.Data
             }
             File.Move(tempPath, resPath);
             Debug.Log("保存到了" + resPath);
-
+            AssetDatabase.Refresh();
             var ai = AssetImporter.GetAtPath(PathEx.ConvertAbstractToAssetPath(resPath));
             ai.assetBundleName = PathConfig.DataBundleName;
             AssetDatabase.Refresh();
