@@ -97,7 +97,7 @@ namespace ResetCore.NAsset
         {
             string path = StreamFilePath(name);
 
-            if (!path.StartsWith("jar"))
+            if (path.StartsWith("jar"))
                 path = "file://" + path;
 
             return path;

@@ -306,7 +306,7 @@ namespace ResetCore.Util
                 onJointBreak2D(brokenJoint);
             }
         }
-#if !UNITY_5
+#if !UNITY_5 && !UNITY_2017
         public delegate void OnLevelWasLoadedCallback(int level);
         public OnLevelWasLoadedCallback onLevelWasLoaded;
         void OnLevelWasLoaded(int level)

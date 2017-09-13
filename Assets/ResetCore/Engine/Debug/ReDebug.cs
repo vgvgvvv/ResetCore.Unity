@@ -28,11 +28,19 @@ namespace ResetCore.ReDebug
             if (!logEnable) return;
             if(context == null)
             {
+#if UNITY_2017
                 Debug.unityLogger.Log(tag, String.Format("[{0}] {1}", relogType.ToString(), message));
+#else
+                Debug.logger.Log(tag, String.Format("[{0}] {1}", relogType.ToString(), message));
+#endif
             }
             else
             {
+#if UNITY_2017
                 Debug.unityLogger.Log(tag, String.Format("[{0}] {1}", relogType.ToString(), message), context);
+#else
+                Debug.logger.Log(tag, String.Format("[{0}] {1}", relogType.ToString(), message), context);
+#endif
             }
         }
 
@@ -47,11 +55,19 @@ namespace ResetCore.ReDebug
             if (!logEnable) return;
             if (context == null)
             {
+#if UNITY_2017
                 Debug.unityLogger.LogWarning(tag, String.Format("[{0}] {1}", relogType.ToString(), message));
+#else
+                Debug.logger.LogWarning(tag, String.Format("[{0}] {1}", relogType.ToString(), message));
+#endif
             }
             else
             {
+#if UNITY_2017
                 Debug.unityLogger.LogWarning(tag, String.Format("[{0}] {1}", relogType.ToString(), message), context);
+#else
+                Debug.logger.LogWarning(tag, String.Format("[{0}] {1}", relogType.ToString(), message), context);
+#endif
             }
         }
 
@@ -66,11 +82,19 @@ namespace ResetCore.ReDebug
             if (!logEnable) return;
             if (context == null)
             {
+#if UNITY_2017
                 Debug.unityLogger.LogError(tag, String.Format("[{0}] {1}", relogType.ToString(), message));
+#else
+                Debug.logger.LogError(tag, String.Format("[{0}] {1}", relogType.ToString(), message));
+#endif
             }
             else
             {
+#if UNITY_2017
                 Debug.unityLogger.LogError(tag, String.Format("[{0}] {1}", relogType.ToString(), message), context);
+#else
+                Debug.logger.LogError(tag, String.Format("[{0}] {1}", relogType.ToString(), message), context);
+#endif
             }
         }
 
@@ -83,11 +107,20 @@ namespace ResetCore.ReDebug
             if (!logEnable) return;
             if (context == null)
             {
+#if UNITY_2017
                 Debug.unityLogger.LogException(e);
+#else
+                Debug.logger.LogException(e);
+#endif
+
             }
             else
             {
+#if UNITY_2017
                 Debug.unityLogger.LogException(e, context);
+#else
+                Debug.logger.LogException(e, context);
+#endif
             }
         }
        
