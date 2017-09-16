@@ -450,6 +450,31 @@ namespace ResetCore.Data
             Write(xml, name, value.ToString());
         }
 
+        public static void Write(XmlElement xml, string name, Vector2 value)
+        {
+            Write(xml, name, StringEx.Vector2ToString(value));
+        }
+
+        public static void Write(XmlElement xml, string name, Vector3 value)
+        {
+            Write(xml, name, StringEx.Vector3ToString(value));
+        }
+
+        public static void Write(XmlElement xml, string name, Vector4 value)
+        {
+            Write(xml, name, StringEx.Vector4ToString(value));
+        }
+
+        public static void Write(XmlElement xml, string name, Quaternion value)
+        {
+            Write(xml, name, StringEx.QuaternionToString(value));
+        }
+
+        public static void Write(XmlElement xml, string name, Color value)
+        {
+            Write(xml, name, StringEx.ColorToString(value));
+        }
+
         #endregion 基本类型写入
 
         /// <summary>
@@ -618,7 +643,7 @@ namespace ResetCore.Data
         }
 
 
-        static bool IsPrimitive(Type type)
+        public static bool IsPrimitive(Type type)
         {
             return type.IsPrimitive || type == typeof(string) || type.IsEnum
                 || type == typeof(Vector2) || type == typeof(Vector3) || type == typeof(Vector4)

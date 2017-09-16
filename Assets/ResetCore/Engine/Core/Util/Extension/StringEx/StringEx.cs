@@ -498,11 +498,11 @@ namespace ResetCore.Util
         public static string ConverToString(this object value)
         {
             //Debug.logger.Log("ConverToString " + Spriter1 + "  "+ Spriter2);
-            if (value == null) return "";
+            if (value == null) return string.Empty;
             System.Type type = value.GetType();
             if (type == null)
             {
-                return "";
+                return string.Empty;
             }
             if (type == typeof(Vector3))
             {
@@ -609,6 +609,33 @@ namespace ResetCore.Util
 
 
         #region ToString
+
+        public static string Vector2ToString(Vector2 value)
+        {
+            return FBracket1.ToString() + ((Vector2)value).x + Spriter1.ToString() + ((Vector2)value).y + BBracket1.ToString();
+        }
+
+        public static string Vector3ToString(Vector3 value)
+        {
+            return FBracket1.ToString() + ((Vector3)value).x + Spriter1.ToString() + ((Vector3)value).y + Spriter1.ToString() + ((Vector3)value).z + BBracket1.ToString();
+        }
+
+        public static string Vector4ToString(Vector4 value)
+        {
+            return FBracket1.ToString() + ((Vector4)value).x + Spriter1.ToString() + ((Vector4)value).y + Spriter1.ToString() + ((Vector4)value).z + Spriter1.ToString() + ((Vector4)value).w + BBracket1.ToString();
+        }
+
+        public static string ColorToString(Color value)
+        {
+            return FBracket1.ToString() + ((Color)value).r + Spriter1.ToString() + ((Color)value).g + Spriter1.ToString() + ((Color)value).b + BBracket1.ToString();
+        }
+
+        public static string QuaternionToString(Quaternion value)
+        {
+            return FBracket1.ToString() + ((Quaternion)value).x + Spriter1.ToString() + ((Quaternion)value).y + Spriter1.ToString() + ((Quaternion)value).z + Spriter1.ToString() + ((Quaternion)value).w + BBracket1.ToString();
+        }
+
+
         /// <summary>
         /// 将列表转换至字符串
         /// </summary>

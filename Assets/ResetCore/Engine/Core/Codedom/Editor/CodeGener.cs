@@ -188,6 +188,29 @@ namespace ResetCore.CodeDom
         }
 
         /// <summary>
+        /// 添加成员函数
+        /// </summary>
+        /// <param name="returnType"></param>
+        /// <param name="paramDict"></param>
+        /// <param name="statements"></param>
+        /// <returns></returns>
+        public CodeGener AddMemberMethod(string returnType, Dictionary<string, Type> paramDict, params CodeStatement[] statements)
+        {
+            CodeMemberMethod newMethod = new CodeMemberMethod();
+            newMethod.ReturnType = new CodeTypeReference(returnType);
+            foreach (var keyValuePair in paramDict)
+            {
+                newMethod.Parameters.Add(new CodeParameterDeclarationExpression(keyValuePair.Value, keyValuePair.Key));
+            }
+
+            newMethod.Statements.AddRange(statements);
+
+            newClass.Members.Add(newMethod);
+
+            return this;
+        }
+
+        /// <summary>
         /// 生成代码
         /// </summary>
         /// <param name="outputPath">生成目录</param>
