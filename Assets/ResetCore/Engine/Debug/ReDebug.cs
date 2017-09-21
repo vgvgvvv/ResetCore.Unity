@@ -7,6 +7,7 @@ namespace ResetCore.ReDebug
     public enum ReLogType
     {
         System = 0,
+        Editor,
         GamePlay,
 
     }
