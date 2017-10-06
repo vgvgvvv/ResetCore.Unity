@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ResetCore.ReDebug;
+using ResetCore.Debugger;
 
 namespace EditorEx{
     

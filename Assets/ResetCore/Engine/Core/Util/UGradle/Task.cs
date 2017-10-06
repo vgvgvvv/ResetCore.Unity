@@ -106,11 +106,19 @@ namespace ResetCore.UGradle
         {
             if (actionType == TaskActionType.Asyn)
             {
-                Debug.unityLogger.LogError("添加同步行为", "异步任务中不允许加入同步行为");
-                return this;
+                asynActionList.Add(Sync2Aync(closure));
             }
-            syncActionList.Add(closure);
+            else
+            {
+                syncActionList.Add(closure);
+            }
             return this;
+        }
+
+        private IEnumerator<float> Sync2Aync(Action closure)
+        {
+            closure();
+            yield return 0;
         }
 
         /// <summary>

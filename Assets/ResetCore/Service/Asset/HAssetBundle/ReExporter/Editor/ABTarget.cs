@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ResetCore.Util
+namespace ResetCore.SAsset
 {
-    public class AsynRunner
+    
+
+    public class ABTarget
     {
+
 
     }
 }

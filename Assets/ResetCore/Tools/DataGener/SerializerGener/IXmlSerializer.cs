@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace ResetCore.Data
 {
-    public interface ISerializer<T>
+    public interface IXmlSerializer<T>
     {
-        void ToXElement(XmlElement xElement, string name, T obj);
+        void Write(XmlElement xElement, string name, T obj);
 
-        T ParseXElement(XmlElement xele, string name);
+        T Read(XmlElement xele, string name);
     }
 }

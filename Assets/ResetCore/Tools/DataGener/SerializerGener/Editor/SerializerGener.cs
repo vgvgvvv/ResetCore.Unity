@@ -36,29 +36,28 @@ namespace ResetCore.Data
             var typeName = type.FullName;
             var finalName = GetSerializerName(type);
             CodeGener g = new CodeGener(serializerNamespace, finalName);
-            g.AddBaseType("ISerializer<" + type.FullName + ">");
+            g.AddBaseType("IXmlSerializer<" + type.FullName + ">");
             g.AddImport("System.Xml");
 
             //ToXElement方法
             CodeMemberMethod toXElementMethod = new CodeMemberMethod();
-            toXElementMethod.Name = "ToXElement";
+            toXElementMethod.Name = "Write";
             toXElementMethod.Attributes = MemberAttributes.Public;
             toXElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(XmlElement)), "xElement"));
             toXElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(string)), "name"));
             toXElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeName), "obj"));
-
-
+            //函数体
             toXElementMethod.Statements.AddRange(GetToXElementCodeStatements(type));
             g.newClass.Members.Add(toXElementMethod);
 
             //Parse方法
             CodeMemberMethod parseMethod = new CodeMemberMethod();
-            parseMethod.Name = "ParseXElement";
+            parseMethod.Name = "Read";
             parseMethod.Attributes = MemberAttributes.Public;
             parseMethod.ReturnType = new CodeTypeReference(type);
             parseMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(XmlElement)), "xElement"));
             parseMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(string)), "name"));
-            //TODO 解析的代码生成
+            //函数体
             parseMethod.Statements.AddRange(GetParseXElementCodeStatements(type));
             g.newClass.Members.Add(parseMethod);
 
@@ -94,14 +93,15 @@ namespace ResetCore.Data
             var type = info.FieldType;
             if (ReXmlSerializer.IsPrimitive(type))
             {
-                return new CodeSnippetStatement("\t\t\tReXmlSerializer.Write(xElement, "
-                                                + "\"" + info.Name + "\"" + ", obj." + info.Name + ");");
+                return new CodeSnippetStatement(
+                    string.Format("\t\t\tReXmlSerializer.Write(xElement, \"{0}\", obj.{0});", info.Name));
             }
             else
             {
-                //TODO 解析的代码生成
+                return new CodeSnippetStatement(
+                    string.Format("\t\t\tCustomSerializer.GetSerializer<{0}>().Write(xElement, \"{1}\", obj. {1});",
+                        type.FullName, info.Name));
             }
-            return null;
         }
 
         /// <summary>
@@ -125,6 +125,19 @@ namespace ResetCore.Data
 
         private static CodeStatement GetParseStatement(FieldInfo info)
         {
+            //TODO 解析的代码生成
+            var type = info.FieldType;
+            if (ReXmlSerializer.IsPrimitive(type))
+            {
+                return new CodeSnippetStatement(
+                    string.Format("\t\t\tReXmlSerializer.Write(xElement, \"{0}\", obj.{0});", info.Name));
+            }
+            else
+            {
+                return new CodeSnippetStatement(
+                    string.Format("\t\t\tCustomSerializer.GetSerializer<{0}>().Write(xElement, \"{1}\", obj. {1});",
+                        type.FullName, info.Name));
+            }
             return null;
         }
 

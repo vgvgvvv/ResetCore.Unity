@@ -13,7 +13,7 @@ namespace ResetCore.NAsset
         private AssetBundleExporter abe = new AssetBundleExporter();
 
         //显示窗口的函数
-        [MenuItem("Tools/AssetBundle/AssetBundle Gener")]
+        [MenuItem("Tools/NAsset/AssetBundle Gener")]
     static void ShowMainWindow()
         {
             AssetBundleExporterWindow window =

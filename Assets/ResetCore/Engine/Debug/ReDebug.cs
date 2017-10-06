@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace ResetCore.ReDebug
+namespace ResetCore.Debugger
 {
     public enum ReLogType
     {

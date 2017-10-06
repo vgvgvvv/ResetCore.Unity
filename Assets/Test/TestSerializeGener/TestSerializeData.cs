@@ -6,4 +6,5 @@ public class TestSerializeData
 {
 
     public int helloInt;
+    public TestSerializeData testData;
 }

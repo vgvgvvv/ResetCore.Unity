@@ -10,6 +10,12 @@ namespace ResetCore.Util
     {
 
         private static T _Instance = null;
+
+        protected virtual bool autoInit
+        {
+            get { return true; }
+        }
+
         public static T Instance
         {
             get
@@ -17,7 +23,8 @@ namespace ResetCore.Util
                 if (_Instance == null)
                 {
                     _Instance = typeof(T).GetConstructor(new Type[] { }).Invoke(new object[] { }) as T;
-                    _Instance.Init();
+                    if(_Instance.autoInit)
+                        _Instance.Init();
                 }
                 return _Instance;
             }
