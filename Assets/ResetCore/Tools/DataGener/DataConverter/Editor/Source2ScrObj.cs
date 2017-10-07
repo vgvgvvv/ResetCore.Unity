@@ -56,7 +56,7 @@ namespace ResetCore.Data
             }
 
             string dataPath = PathConfig.GetLocalGameDataPath(PathConfig.DataType.Obj);
-            PathEx.MakeDirectoryExist(dataPath);
+            PathEx.MakeFileDirectoryExist(dataPath);
 
             
             string resPath = dataPath + className + ObjData.ex;
@@ -65,7 +65,7 @@ namespace ResetCore.Data
                 resPath = outputPath;
             }
             string root = Path.GetDirectoryName(resPath);
-            PathEx.MakeDirectoryExist(root);
+            PathEx.MakeFileDirectoryExist(root);
 
             AssetDatabase.CreateAsset(data, "Assets/"+ className + ObjData.ex);
 

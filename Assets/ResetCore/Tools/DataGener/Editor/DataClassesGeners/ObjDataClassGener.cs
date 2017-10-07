@@ -159,7 +159,7 @@ public class ObjDataClassGener
         //空行
         options.BlankLinesBetweenMembers = true;
 
-        PathEx.MakeDirectoryExist(outputFile);
+        PathEx.MakeFileDirectoryExist(outputFile);
         using (System.IO.StreamWriter sw = new System.IO.StreamWriter(outputFile))
         {
             Debug.Log("生成代码" + outputFile);

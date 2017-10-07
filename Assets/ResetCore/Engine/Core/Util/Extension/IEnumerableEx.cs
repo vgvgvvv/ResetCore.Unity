@@ -25,6 +25,24 @@ namespace ResetCore.Util
             }
             return default(T);
         }
+
+        /// <summary>
+        /// 遍历迭代器
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="iEnumerable"></param>
+        /// <param name="action"></param>
+        public static void Foreach<T>(this IEnumerable<T> iEnumerable, Action<T> action)
+        {
+            var e = iEnumerable.GetEnumerator();
+            while (e.MoveNext())
+            {
+                if(action == null)
+                    continue;
+                action(e.Current);
+            }
+            e.Dispose();
+        }
     }
 
 }

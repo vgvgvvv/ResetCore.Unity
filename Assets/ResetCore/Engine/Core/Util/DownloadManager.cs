@@ -113,7 +113,7 @@ public class DownloadManager : Singleton<DownloadManager> {
 
                 //判断下载文件的文件夹是否存在
                 var dirName = Path.GetDirectoryName(task.FileName);
-                PathEx.MakeDirectoryExist(dirName);
+                PathEx.MakeFileDirectoryExist(dirName);
 
                 Action downloadAct = () => 
                 {

@@ -298,7 +298,7 @@ namespace ResetCore.UGUI
                 spriterenderer.sprite = sp as Sprite;
 
                 string savePath = GetSpritePrefabPath(currentPackageName + "-" + sp.name);
-                PathEx.MakeDirectoryExist(savePath);
+                PathEx.MakeFileDirectoryExist(savePath);
                 PrefabUtility.CreatePrefab(savePath, go);
                 DestroyImmediate(go);
             }

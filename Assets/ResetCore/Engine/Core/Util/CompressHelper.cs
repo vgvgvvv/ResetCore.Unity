@@ -65,7 +65,7 @@ public static class CompressHelper
     /// <param name="zipLevel"></param>
     public static void CompressFiles(string sourcePath, string[] filePath, string outputFilePath, int zipLevel = 0)
     {
-        PathEx.MakeDirectoryExist(outputFilePath);
+        PathEx.MakeFileDirectoryExist(outputFilePath);
         Stream target = new FileStream(outputFilePath, FileMode.OpenOrCreate);
         sourcePath = Path.GetFullPath(sourcePath);
         int startIndex = string.IsNullOrEmpty(sourcePath) ? Path.GetPathRoot(sourcePath).Length : sourcePath.Length;

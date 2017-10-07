@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 2664511473
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9707b306f3c3ad64da1323c076ff3ef9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8d068741ae817c9b5c92580f37de87e3
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/Test/TestSAsset/Res/TestMat.mat
+Dependencies:
+- D:/Documents/UnityProjects/ResetCore.Unity/Assets/StreamingAssets/Standalone/AssetBundles/Bytes/assets.test.testsasset.res.timg.jpg.ab

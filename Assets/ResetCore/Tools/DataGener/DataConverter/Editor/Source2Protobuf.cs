@@ -53,7 +53,7 @@ namespace ResetCore.Data
             }
 
             string protoPath = PathConfig.GetLocalGameDataPath(PathConfig.DataType.Protobuf);
-            PathEx.MakeDirectoryExist(protoPath);
+            PathEx.MakeFileDirectoryExist(protoPath);
 
             if (ProtoBuf.Serializer.NonGeneric.CanSerialize(protobufDataType))
             {
@@ -63,7 +63,7 @@ namespace ResetCore.Data
                     resPath = outputPath;
                 }
                 string root = Path.GetDirectoryName(resPath);
-                PathEx.MakeDirectoryExist(root);
+                PathEx.MakeFileDirectoryExist(root);
                 using (var file = System.IO.File.Create(resPath))
                 {
                     ProtoBuf.Serializer.NonGeneric.Serialize(file, result);
@@ -110,7 +110,7 @@ namespace ResetCore.Data
                     member.AddMemberCostomAttribute("ProtoBuf.ProtoMember", (i+1).ToString());
                 });
             });
-            PathEx.MakeDirectoryExist(PathConfig.GetLoaclGameDataClassPath(PathConfig.DataType.Protobuf));
+            PathEx.MakeFileDirectoryExist(PathConfig.GetLoaclGameDataClassPath(PathConfig.DataType.Protobuf));
             protobufBaseGener.GenCSharp(PathConfig.GetLoaclGameDataClassPath(PathConfig.DataType.Protobuf));
 
             

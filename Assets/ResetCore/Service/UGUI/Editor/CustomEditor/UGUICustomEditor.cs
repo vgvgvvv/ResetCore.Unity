@@ -72,7 +72,7 @@ namespace ResetCore.UGUI
                     {
                         string path = PathEx.Combine(PathConfig.assetResourcePath, uiPrefabPath, prefabNameWithEx).Replace("\\", "/");
                         string absolutePath = PathEx.Combine(PathConfig.resourcePath, uiPrefabPath, prefabNameWithEx);
-                        PathEx.MakeDirectoryExist(absolutePath);
+                        PathEx.MakeFileDirectoryExist(absolutePath);
                         Debug.unityLogger.Log("Create a ui prefab : " + path);
                         GameObject go = PrefabUtility.CreatePrefab(path, ui.gameObject);
                         PrefabUtility.ConnectGameObjectToPrefab(ui.gameObject, go);

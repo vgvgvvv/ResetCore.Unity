@@ -44,7 +44,7 @@ namespace ResetCore.Excel
         {
             //TODO
 
-            //PathEx.MakeDirectoryExist(Path.GetDirectoryName(filePath));
+            //PathEx.MakeFileDirectoryExist(Path.GetDirectoryName(filePath));
             ////FileStream fs = File.Create(filePath);
             //this.workbook = new HSSFWorkbook();
             //this.sheet = workbook.CreateSheet(SheetName);

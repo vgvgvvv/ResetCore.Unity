@@ -21,10 +21,10 @@ namespace ResetCore.Util
         }
 
         /// <summary>
-        /// 使目录存在,Path可以是目录名也可以是文件名
+        /// 使目录存在,Path可以是目录名必须是文件名
         /// </summary>
         /// <param name="path"></param>
-        public static void MakeDirectoryExist(string path)
+        public static void MakeFileDirectoryExist(string path)
         {
             string root = Path.GetDirectoryName(path);
             if (!Directory.Exists(root))
@@ -32,6 +32,19 @@ namespace ResetCore.Util
                 Directory.CreateDirectory(root);
             }
         }
+
+        /// <summary>
+        /// 使目录存在
+        /// </summary>
+        /// <param name="path"></param>
+        public static void MakeDirectoryExist(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
         /// <summary>
         /// 结合目录
         /// </summary>

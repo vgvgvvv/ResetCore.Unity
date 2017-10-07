@@ -59,8 +59,11 @@ namespace ResetCore.NAsset
             BuildPipeline.BuildAssetBundles(path,
                 options
                 , currentTarget);
-            GenRList();
-            GenBundleList();
+
+            //暂时屏蔽自动生成类
+            //GenRList();
+            //GenBundleList();
+
             AssetDatabase.Refresh();
             GenResourcesFolderList();
             GenStreamingFolderList();
@@ -180,7 +183,7 @@ namespace ResetCore.NAsset
         /// </summary>
         public void GenResourcesFolderList()
         {
-            PathEx.MakeDirectoryExist(NAssetPaths.resourcesListPath);
+            PathEx.MakeFileDirectoryExist(NAssetPaths.resourcesListPath);
             string resourcesPath = PathEx.ConvertAssetPathToAbstractPath(PathConfig.assetResourcePath);
             DirectoryInfo dirInfo = new DirectoryInfo(resourcesPath);
             var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
@@ -200,7 +203,7 @@ namespace ResetCore.NAsset
         /// </summary>
         public void GenStreamingFolderList()
         {
-            PathEx.MakeDirectoryExist(NAssetPaths.resourcesListPath);
+            PathEx.MakeFileDirectoryExist(NAssetPaths.resourcesListPath);
             DirectoryInfo dirInfo = new DirectoryInfo(Application.streamingAssetsPath);
             var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
 

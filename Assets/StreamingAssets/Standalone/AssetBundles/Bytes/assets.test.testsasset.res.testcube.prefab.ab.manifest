@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 614557550
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 91c7c80ac0ef1f3048fcdb217c31758c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 0615fdd8182050e228ba12bfa176028d
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+Assets:
+- Assets/Test/TestSAsset/Res/TestCube.prefab
+Dependencies:
+- D:/Documents/UnityProjects/ResetCore.Unity/Assets/StreamingAssets/Standalone/AssetBundles/Bytes/assets.test.testsasset.res.testmat.mat.ab

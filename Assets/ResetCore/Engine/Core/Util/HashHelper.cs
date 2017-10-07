@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ResetCore.Util
@@ -108,9 +110,10 @@ namespace ResetCore.Util
             return hashSHA1;
         }//ComputeSHA1
     }//end class: HashHelper
-     /// <summary>
-     /// 提供 CRC32 算法的实现
-     /// </summary>
+
+    /// <summary>
+    /// 提供 CRC32 算法的实现
+    /// </summary>
     public class Crc32 : System.Security.Cryptography.HashAlgorithm
     {
         public const UInt32 DefaultPolynomial = 0xedb88320;
@@ -199,4 +202,46 @@ namespace ResetCore.Util
             return new byte[] { (byte)((x >> 24) & 0xff), (byte)((x >> 16) & 0xff), (byte)((x >> 8) & 0xff), (byte)(x & 0xff) };
         }
     }//end class: Crc32
+
+    /// <summary>
+    /// 常用Hash方法
+    /// </summary>
+    public class HashUtil
+    {
+        public static string Get(Stream fs)
+        {
+            HashAlgorithm ha = HashAlgorithm.Create();
+            byte[] bytes = ha.ComputeHash(fs);
+            fs.Close();
+            return ToHexString(bytes);
+        }
+
+        public static string Get(string s)
+        {
+            return Get(Encoding.UTF8.GetBytes(s));
+        }
+
+        public static string Get(byte[] data)
+        {
+            HashAlgorithm ha = HashAlgorithm.Create();
+            byte[] bytes = ha.ComputeHash(data);
+            return ToHexString(bytes);
+        }
+
+        public static string ToHexString(byte[] bytes)
+        {
+            string hexString = string.Empty;
+            if (bytes != null)
+            {
+                StringBuilder strB = new StringBuilder();
+
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    strB.Append(bytes[i].ToString("X2"));
+                }
+                hexString = strB.ToString().ToLower();
+            }
+            return hexString;
+        }
+    }
 }

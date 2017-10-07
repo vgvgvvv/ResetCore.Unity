@@ -136,7 +136,7 @@ namespace ResetCore.Xml
         /// <param name="path"></param>
         public static void SafeSaveWithoutDeclaration(this XDocument xDoc, string path)
         {
-            PathEx.MakeDirectoryExist(path);
+            PathEx.MakeFileDirectoryExist(path);
             File.WriteAllText(path, xDoc.ToString());
         }
 
