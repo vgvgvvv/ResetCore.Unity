@@ -15,26 +15,37 @@ public class Driver : MonoSingleton<Driver>
 
     void Awake()
     {
-        WorkFlow workFlow = new WorkFlow("Test", "用于测试工作流");
+        //WorkFlow workFlow = new WorkFlow("Test", "用于测试工作流");
 
-        AddTask task3 = new AddTask("add3", "增加数字", 80);
-        workFlow.AddTask(
-            new AddTask("add1", "增加数字", 50)
-                .DependsOn(
-                    new AddTask("add2", "增加数字", 70)
-                        .DependsOn(task3))
-                .DependsOn(
-                    new AddTask("add4", "增加数字", 90)
-                        .DependsOn(task3))
-        );
+        //AddTask task3 = new AddTask("add3", "增加数字", 80);
+        //workFlow.AddTask(
+        //    new AddTask("add1", "增加数字", 50)
+        //        .DependsOn(
+        //            new AddTask("add2", "增加数字", 70)
+        //                .DependsOn(task3))
+        //        .DependsOn(
+        //            new AddTask("add4", "增加数字", 90)
+        //                .DependsOn(task3))
+        //);
 
 
-        workFlow.Start();
+        //workFlow.Start();
+        EventDispatcher.AddEventListener<int>("Test1", (intvar) =>
+        {
+            Debug.Log("Hello!");
+        }).PoolByNum(2);
 
+        CoroutineTaskManager.Instance.LoopTodoByTime(() =>
+        {
+            EventDispatcher.TriggerEvent("Test1");
+        }, 5, -1);
 
     }
 
-    
+    void Update()
+    {
+
+    }
 }
 
 public class AddTask : Task

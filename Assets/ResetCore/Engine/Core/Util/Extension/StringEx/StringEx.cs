@@ -203,6 +203,14 @@ namespace ResetCore.Util
                     }
                     return constructor;
                 }
+                if (type == typeof(ArrayList))
+                {
+                    return value.GetValue<List<string>>() ?? defultValue;
+                }
+                if (type == typeof(Hashtable))
+                {
+                    return value.GetValue<Dictionary<string, string>>() ?? defultValue;
+                }
                 //数组
                 if (type.IsArray)
                 {
@@ -320,7 +328,7 @@ namespace ResetCore.Util
                         string[] strArray2 = strArray[i].Split(new char[] { keyValueSpriter });
                         if ((strArray2.Length == 2) && !dictionary.ContainsKey(strArray2[0]))
                         {
-                            dictionary.Add(strArray2[0], strArray2[1]);
+                            dictionary.Add(strArray2[0].Trim(), strArray2[1].Trim());
                         }
                     }
                 }
@@ -580,6 +588,31 @@ namespace ResetCore.Util
                 stringBuilder.Append(itemStr);
 
                 return stringBuilder.ToString();
+            }
+            if (type == typeof(ArrayList))
+            {
+                StringBuilder builder = new StringBuilder();
+                var arrayList = value as ArrayList;
+                for (int i = 0; i < arrayList.Count - 1; i++)
+                {
+                    builder.Append(arrayList[i].ConverToString()).Append(",");
+                }
+                builder.Append(arrayList[arrayList.Count - 1].ConverToString());
+                return builder.ToString();
+            }
+            if (type == typeof(Hashtable))
+            {
+                StringBuilder builder = new StringBuilder();
+                var table = value as Hashtable;
+                IEnumerator e = table.Keys.GetEnumerator();
+                while (e.MoveNext())
+                {
+                    var tableKey = e.Current.ConverToString();
+                    var tableValue = table[e.Current].ConverToString();
+                    builder.Append(tableKey).Append(StringEx.Spriter2).Append(tableValue).Append(StringEx.Spriter1);
+                }
+                builder.Remove(builder.Length - 2, 1);
+                return builder.ToString();
             }
             if (type.IsArray)
             {
