@@ -26,6 +26,18 @@ namespace ResetCore.UGUI.View
         
         private UnityEngine.UI.InputField _inputInputField;
         
+        private UnityEngine.GameObject _goMoney1;
+        
+        private UnityEngine.UI.Text _txtMoney1;
+        
+        private UnityEngine.GameObject _goMoney2;
+        
+        private UnityEngine.UI.Text _txtMoney2;
+        
+        private UnityEngine.GameObject _goMoney3;
+        
+        private UnityEngine.UI.Text _txtMoney3;
+        
         public virtual UnityEngine.GameObject goMoney
         {
             get
@@ -83,6 +95,78 @@ namespace ResetCore.UGUI.View
             set
             {
                 this._inputInputField = value;
+            }
+        }
+        
+        public virtual UnityEngine.GameObject goMoney1
+        {
+            get
+            {
+                return this._goMoney1;
+            }
+            set
+            {
+                this._goMoney1 = value;
+            }
+        }
+        
+        public virtual UnityEngine.UI.Text txtMoney1
+        {
+            get
+            {
+                return this._txtMoney1;
+            }
+            set
+            {
+                this._txtMoney1 = value;
+            }
+        }
+        
+        public virtual UnityEngine.GameObject goMoney2
+        {
+            get
+            {
+                return this._goMoney2;
+            }
+            set
+            {
+                this._goMoney2 = value;
+            }
+        }
+        
+        public virtual UnityEngine.UI.Text txtMoney2
+        {
+            get
+            {
+                return this._txtMoney2;
+            }
+            set
+            {
+                this._txtMoney2 = value;
+            }
+        }
+        
+        public virtual UnityEngine.GameObject goMoney3
+        {
+            get
+            {
+                return this._goMoney3;
+            }
+            set
+            {
+                this._goMoney3 = value;
+            }
+        }
+        
+        public virtual UnityEngine.UI.Text txtMoney3
+        {
+            get
+            {
+                return this._txtMoney3;
+            }
+            set
+            {
+                this._txtMoney3 = value;
             }
         }
     }

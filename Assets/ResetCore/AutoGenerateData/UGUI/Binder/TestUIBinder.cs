@@ -26,6 +26,12 @@ namespace ResetCore.UGUI.Binder
 ((TestUIView)view).txtMoney.Bind(((TestUIModel)model).money);
             // From g-InputField@input->money:string
 ((TestUIView)view).inputInputField.Bind(((TestUIModel)model).money);
+            // From g-Money1@txt->money:string
+((TestUIView)view).txtMoney1.Bind(((TestUIModel)model).money);
+            // From g-Money2@txt->money:string
+((TestUIView)view).txtMoney2.Bind(((TestUIModel)model).money);
+            // From g-Money3@txt->money:string
+((TestUIView)view).txtMoney3.Bind(((TestUIModel)model).money);
         }
     }
 }
