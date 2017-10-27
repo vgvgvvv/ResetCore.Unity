@@ -1030,6 +1030,67 @@ namespace ResetCore.Util
         {
             return string.IsNullOrEmpty(str);
         }
+
+        /// <summary>
+        /// 删除特定字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string RemoveString(this string str, params string[] targets)
+        {
+            for (int i = 0; i < targets.Length; i++)
+            {
+                str = str.Replace(targets[i], string.Empty);
+            }
+            return str;
+        }
+
+        /// <summary>
+        /// 拆分并去除空格
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string[] SplitAndTrim(this string str, params char[] separator)
+        {
+            var res = str.Split(separator);
+            for (var i = 0; i < res.Length; i++)
+            {
+                res[i] = res[i].Trim();
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 查找在两个字符串中间的字符串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="front"></param>
+        /// <param name="behined"></param>
+        /// <returns></returns>
+        public static string FindBetween(this string str, string front, string behined)
+        {
+            var startIndex = str.IndexOf(front) + front.Length;
+            var endIndex = str.IndexOf(behined);
+            if (startIndex < 0 || endIndex < 0)
+                return str;
+            return str.Substring(startIndex, endIndex - startIndex);
+        }
+
+        /// <summary>
+        /// 查找在字符后面的字符串
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="front"></param>
+        /// <returns></returns>
+        public static string FindAfter(this string str, string front)
+        {
+            var startIndex = str.IndexOf(front) + front.Length;
+            if (startIndex < 0)
+                return str;
+            return str.Substring(startIndex);
+        }
     }
 
 }

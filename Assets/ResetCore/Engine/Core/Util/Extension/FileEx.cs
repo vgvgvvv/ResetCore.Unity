@@ -4,7 +4,7 @@ using System.IO;
 
 namespace ResetCore.Util
 {
-    public class FileEx
+    public static class FileEx
     {
         /// <summary>
         /// 保存文本
@@ -17,11 +17,31 @@ namespace ResetCore.Util
             {
                 File.Delete(path);
             }
-            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write);
-            StreamWriter sr = new StreamWriter(fs);
-            sr.Write(text);//开始写入值
-            sr.Close();
-            fs.Close();
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter sr = new StreamWriter(fs))
+                {
+                    sr.Write(text);//开始写入值
+                }
+            }
+        }
+
+        /// <summary>
+        /// 读取文本
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public static string ReadText(this FileInfo file)
+        {
+            var result = string.Empty;
+            using (FileStream fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    result = sr.ReadToEnd();
+                }
+            }
+            return result;
         }
 
 #if UNITY_EDITOR

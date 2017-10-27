@@ -20,6 +20,29 @@ namespace ResetCore.Util
             }
             return comp;
         }
+
+        /// <summary>
+        /// 在父节点中找到Component
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="go"></param>
+        /// <returns></returns>
+        public static T GetComponentInParent<T>(this GameObject go) where T : Component
+        {
+            if (go.transform.parent == null)
+                return null;
+
+            var parent = go.transform.parent.gameObject;
+            var res = parent.GetComponent<T>();
+            if (res == null)
+            {
+                return GetComponentInParent<T>(parent);
+            }
+            else
+            {
+                return res;
+            }
+        }
     }
 
 }
