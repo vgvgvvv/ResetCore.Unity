@@ -54,9 +54,13 @@ static public class NGUITools
 	{
 		get
 		{
+#if !UNITY_5_4_OR_NEWER
 			return Application.platform != RuntimePlatform.WindowsWebPlayer &&
 				Application.platform != RuntimePlatform.OSXWebPlayer;
-		}
+#else
+		    return true;
+#endif
+        }
 	}
 
 	/// <summary>
@@ -1027,11 +1031,11 @@ static public class NGUITools
 		// Commented out because apparently it causes Unity 4.5.3 to lag horribly:
 		// http://www.tasharen.com/forum/index.php?topic=10882.0
 //#if UNITY_4_3
- #if UNITY_FLASH
+#if UNITY_FLASH
 		object comp = go.GetComponent<T>();
- #else
+#else
 		T comp = go.GetComponent<T>();
- #endif
+#endif
 		if (comp == null)
 		{
 			Transform t = go.transform.parent;
@@ -1042,11 +1046,11 @@ static public class NGUITools
 				t = t.parent;
 			}
 		}
- #if UNITY_FLASH
+#if UNITY_FLASH
 		return (T)comp;
- #else
+#else
 		return comp;
- #endif
+#endif
 //#else
 //		return go.GetComponentInParent<T>();
 //#endif
@@ -1060,11 +1064,11 @@ static public class NGUITools
 	{
 		if (trans == null) return null;
 #if UNITY_4_3
- #if UNITY_FLASH
+#if UNITY_FLASH
 		object comp = trans.GetComponent<T>();
- #else
+#else
 		T comp = trans.GetComponent<T>();
- #endif
+#endif
 		if (comp == null)
 		{
 			Transform t = trans.transform.parent;
@@ -1075,11 +1079,11 @@ static public class NGUITools
 				t = t.parent;
 			}
 		}
- #if UNITY_FLASH
+#if UNITY_FLASH
 		return (T)comp;
- #else
+#else
 		return comp;
- #endif
+#endif
 #else
 		return trans.GetComponentInParent<T>();
 #endif

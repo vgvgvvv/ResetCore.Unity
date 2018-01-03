@@ -2035,10 +2035,11 @@ public class Reporter : MonoBehaviour {
                 streamingAssetsPath = Application.dataPath + "/StreamingAssets/";
             url = System.IO.Path.Combine(streamingAssetsPath, prefFile);
         }
-
+#if !UNITY_5_4_OR_NEWER
         if (Application.platform != RuntimePlatform.OSXWebPlayer && Application.platform != RuntimePlatform.WindowsWebPlayer)
             if (!url.Contains("://"))
                 url = "file://" + url;
+#endif
 
 
        // float startTime = Time.realtimeSinceStartup;

@@ -924,7 +924,9 @@ public class UIPanel : UIRect
 
 		mHalfPixelOffset = (Application.platform == RuntimePlatform.WindowsPlayer ||
 			Application.platform == RuntimePlatform.XBOX360 ||
+#if !UNITY_5_4_OR_NEWER
 			Application.platform == RuntimePlatform.WindowsWebPlayer ||
+#endif
 			Application.platform == RuntimePlatform.WindowsEditor);
 
 		// Only DirectX 9 needs the half-pixel offset
