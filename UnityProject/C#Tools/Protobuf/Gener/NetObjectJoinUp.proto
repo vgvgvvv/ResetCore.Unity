@@ -1,0 +1,4 @@
+message NetObjectJoinUpData {
+	optional int32 instanceId = 1;
+	optional string typeName = 2;
+}

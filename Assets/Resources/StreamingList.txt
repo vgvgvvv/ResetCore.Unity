@@ -1,1 +1,0 @@
-build_info.txt,AssetBundles/AssetBundles,AssetBundles/AssetBundles.manifest,AssetBundles/data,AssetBundles/data.manifest

@@ -1,0 +1,23 @@
+Version 2.0(Aug.17,2015)
+Added Auto mode.
+Added scripts filter panel.
+Added Preprocessor Directives analyzing support.
+Added System.* packages option(manual mode only).
+Improved User Interface.
+Fixed minor bugs.
+
+Version 1.1.1(Jul.26,2015)
+Fixed file extension case bug.
+Removed "include system.* packages"
+
+version 1.1 (Jul.18,2015)
+Added Unity 4.3.4 support(the interface is a little bit differenct).
+Added OSX support.
+Added documentation(xml) support.
+Added #define symbols support.
+Added unsafe code support.
+Added UnityExtension(UI, Event,etc.) options(Unity 5 only).
+Added system.* package option.
+
+version 1.0 (Jul.3,2015)
+DLL Builder released.

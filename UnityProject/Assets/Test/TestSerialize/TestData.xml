@@ -1,0 +1,34 @@
+﻿<Root>
+  <SkillPlayer>
+    <data>
+      <speed>1</speed>
+      <delayTime>0</delayTime>
+    </data>
+    <delayTime>0</delayTime>
+    <speed>1</speed>
+    <childPlayerList Type="ResetCore.GameSystem.BasePlayer">
+      <item>
+        <duration>1</duration>
+        <data>
+          <duration>1</duration>
+          <speed>0.5</speed>
+          <delayTime>0</delayTime>
+        </data>
+        <delayTime>0</delayTime>
+        <speed>0.5</speed>
+        <childPlayerList Type="ResetCore.GameSystem.BasePlayer" />
+      </item>
+      <item>
+        <duration>5</duration>
+        <data>
+          <duration>5</duration>
+          <speed>1</speed>
+          <delayTime>0</delayTime>
+        </data>
+        <delayTime>0</delayTime>
+        <speed>1</speed>
+        <childPlayerList Type="ResetCore.GameSystem.BasePlayer" />
+      </item>
+    </childPlayerList>
+  </SkillPlayer>
+</Root>

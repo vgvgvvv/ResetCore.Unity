@@ -1,0 +1,8 @@
+TODOList：
+1、CommandQueue，命令队列，用于快速构建编辑器指令。
+
+2、事件/条件/动作，三段式的全局事件系统：结合上述命令队列用于快速构建命令脚本。
+实现更快的需求实现以及热更的需求。
+
+3、更有效的IOC框架。目前还只支持IOCMonoBehavior。
+接下去支持ApplicationContext，LoadFromC#与LoadFromXml

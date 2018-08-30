@@ -1,4 +1,0 @@
-命令：
-
-//1、通过Excel文件生成GameData的Xml以及Class
-//命令：GameDataGen xlsx路径 xml输出路径 cs文件输出路径
